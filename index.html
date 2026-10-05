@@ -623,10 +623,26 @@ if (typeof firebase !== 'undefined' && firebase.database) {
 }
 
 function saveSettings(s) {
+  // Local storage backup
   localStorage.setItem(LS_KEY, JSON.stringify(s));
+  
+  // Firebase Realtime Database Save
   if (typeof firebase !== 'undefined' && firebase.database) {
-    firebase.database().ref('prayerTimes').set(s); 
+    firebase.database().ref('prayerTimes').set({
+      fajr: s.fajr,
+      zuhr: s.zuhr,
+      asr: s.asr,
+      isha: s.isha,
+      jumma: s.jumma
+    }).then(() => {
+      alert("Namaz timing Firebase Cloud par live save ho gaya!");
+    }).catch((err) => {
+      alert("Error: " + err.message);
+    });
+  } else {
+    alert("Saved to local browser storage only.");
   }
+
 }
 function timeStrToMins(str){
   const [h,m] = str.split(':').map(Number);
