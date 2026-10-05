@@ -21,18 +21,15 @@
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 
-  // Realtime Sync Across Devices
-  database.ref('prayerTimes').on('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      if (data.fajr && document.getElementById('fajr-time')) document.getElementById('fajr-time').innerText = data.fajr;
-      if (data.dhuhr && document.getElementById('dhuhr-time')) document.getElementById('dhuhr-time').innerText = data.dhuhr;
-      if (data.asr && document.getElementById('asr-time')) document.getElementById('asr-time').innerText = data.asr;
-      if (data.maghrib && document.getElementById('maghrib-time')) document.getElementById('maghrib-time').innerText = data.maghrib;
-      if (data.isha && document.getElementById('isha-time')) document.getElementById('isha-time').innerText = data.isha;
-      if (data.juma && document.getElementById('juma-time')) document.getElementById('juma-time').innerText = data.juma;
-    }
-  });
+// Realtime Live Sync Across Devices
+database.ref('prayerTimes').on('value', (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    localStorage.setItem(LS_KEY, JSON.stringify(data));
+    settings = { ...DEFAULTS, ...data };
+    if (typeof renderPrayerCards === 'function') renderPrayerCards();
+  }
+});
 
   function savePrayerTimesToFirebase(newTimes) {
     database.ref('prayerTimes').set(newTimes)
