@@ -588,6 +588,26 @@ const todayVals = dayTimes(todayMonthIdx, todayDay);
 document.getElementById('todayDateLabel').textContent =
   now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
+/* ---------- Google Sheet overrides (filled by loadTimings) ----------
+   Minutes-from-midnight per prayer, e.g. { fajr: 315, isha: 1190 }.
+   Declared before renderPrayerCards() runs so the first render can read it.
+   A prayer missing here falls back to the admin settings / sunset calendar. */
+const sheetMins = {};
+
+function textToMins(t, key) {
+  const m = /(\d{1,2}):(\d{2})(?::\d{2})?\s*([AP]M)?/i.exec(t || '');
+  if (!m) return null;
+  let h = +m[1];
+  const min = +m[2];
+  const ap = (m[3] || '').toUpperCase();
+  if (ap === 'PM' && h < 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+  // No AM/PM typed in the sheet (e.g. "1:30"): Asr/Maghrib/Isha are always PM, Zuhr is PM after 12
+  if (!ap && h < 12 && (key === 'asr' || key === 'maghrib' || key === 'isha' || (key === 'zuhr' && h < 7))) h += 12;
+  if (h > 23 || min > 59) return null;
+  return h * 60 + min;
+}
+
 const cardsWrap = document.getElementById('prayerCards');
 
 function renderJumma(){
@@ -599,11 +619,11 @@ function renderJumma(){
 function renderPrayerCards(){
   cardsWrap.innerHTML = '';
   const PRAYERS = [
-    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',     min: timeStrToMins(settings.fajr) },
-    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',           min: timeStrToMins(settings.zuhr) },
-    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt',min: timeStrToMins(settings.asr) },
-    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',  min: todayVals.maghrib + (parseInt(settings.maghribOffset)||0), note:'Sunset-based' },
-    { key:'isha',    label:'Isha',    icon:'fa-moon',          min: timeStrToMins(settings.isha) },
+    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',     min: sheetMins.fajr ?? timeStrToMins(settings.fajr) },
+    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',           min: sheetMins.zuhr ?? timeStrToMins(settings.zuhr) },
+    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt',min: sheetMins.asr ?? timeStrToMins(settings.asr) },
+    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',  min: sheetMins.maghrib ?? (todayVals.maghrib + (parseInt(settings.maghribOffset)||0)), note:'Sunset-based' },
+    { key:'isha',    label:'Isha',    icon:'fa-moon',          min: sheetMins.isha ?? timeStrToMins(settings.isha) },
   ];
   const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(settings.jumma), note:'Fridays only' };
 
@@ -615,7 +635,7 @@ function renderPrayerCards(){
   const allCards = [...PRAYERS, jumma];
 
   allCards.forEach((p, i) => {
-    const isNext = (p.key !== 'jumma' && i === nextIdx) || (p.key === 'jumma' && isFriday && jumma.min > nowMins && nowMins > timeStrToMins(settings.fajr));
+    const isNext = (p.key !== 'jumma' && i === nextIdx) || (p.key === 'jumma' && isFriday && jumma.min > nowMins && nowMins > PRAYERS[0].min);
     const card = document.createElement('div');
     card.className = `prayer-card glass rounded-2xl px-5 py-3.5 flex items-center justify-between gap-4 ${isNext ? 'is-next' : ''}`;
     card.innerHTML = `
@@ -782,7 +802,106 @@ function renderMonth(idx){
 
 renderMonth(todayMonthIdx);
 
-    } catch (err) {
-      console.error("Error loading sheet:", err);
+/* ---------- Google Sheet integration (CSV) ----------
+   Sheet columns: "Prayer Name" (Fajr, Zuhr, Asr, Maghrib, Isha) and "Time".
+   Rows are matched by prayer name, so row order does not matter.
+   The sheet must be shared / published so anyone with the link can view it.
+   Values go into sheetMins (not straight into the DOM), so cards re-render
+   cleanly and the monthly schedule table is never touched. */
+const SHEET_ID  = '1OuFFFQe_x1yVn5EXWJ9Q1MBZspPtmAfKihCuJwHhuCI';
+const SHEET_GID = '1956459073';
+const SHEET_URLS = [
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`,
+  // Fallback: same data, and this endpoint reliably allows browser (CORS) requests
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`
+];
+const PRAYER_ALIASES = {
+  fajr: 'fajr',
+  zuhr: 'zuhr', dhuhr: 'zuhr', zohar: 'zuhr',
+  asr: 'asr',
+  maghrib: 'maghrib',
+  isha: 'isha', esha: 'isha'
+};
+
+const normCell = s => (s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+
+// Small CSV parser: handles quoted cells, commas inside quotes, and \r\n line endings
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cell = '', inQuotes = false;
+  text = text.replace(/^\uFEFF/, '');
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') { cell += '"'; i++; }
+        else inQuotes = false;
+      } else cell += ch;
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      row.push(cell); cell = '';
+    } else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); cell = '';
+      rows.push(row); row = [];
+    } else {
+      cell += ch;
     }
   }
+  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+async function fetchSheetCSV() {
+  let lastErr;
+  for (const url of SHEET_URLS) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      // Google returns a sign-in HTML page (status 200) when the sheet isn't shared
+      if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('Got an HTML page instead of CSV - is the sheet shared/published?');
+      return text;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
+async function loadTimings() {
+  if (document.hidden) return;               // don't poll from background tabs
+  try {
+    const rows = parseCSV(await fetchSheetCSV());
+
+    const headerIdx = rows.findIndex(r => {
+      const h = r.map(normCell);
+      return h.includes('prayer name') && h.includes('time');
+    });
+    if (headerIdx === -1) throw new Error('Columns "Prayer Name" and "Time" not found in sheet');
+    const header = rows[headerIdx].map(normCell);
+    const nameCol = header.indexOf('prayer name');
+    const timeCol = header.indexOf('time');
+
+    let changed = false;
+    rows.slice(headerIdx + 1).forEach(r => {
+      const key = PRAYER_ALIASES[normCell(r[nameCol])];
+      if (!key) return;                                  // ignore rows that aren't one of the five prayers
+      const mins = textToMins(r[timeCol], key);
+      if (mins != null && sheetMins[key] !== mins) {     // blank/invalid cell keeps last good value
+        sheetMins[key] = mins;
+        changed = true;
+      }
+    });
+    if (changed) renderPrayerCards();        // re-render only when a time actually changed
+  } catch (err) {
+    console.error('Error loading sheet:', err);
+  }
+}
+
+loadTimings();
+setInterval(loadTimings, 30000);
+</script>
+</body>
+</html>
