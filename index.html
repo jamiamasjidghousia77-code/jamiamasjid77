@@ -781,6 +781,43 @@ function renderMonth(idx){
 }
 
 renderMonth(todayMonthIdx);
+  <script>
+  const BIN_ID = '6ac3c383ffd5d160534fa449';
+  const API_KEY = '$2a$10$wTitIrhTOLPjOXXrRy7RAOCLWhUTCKTJv3VGnQTnDpDv3tjUM82Hi';
+
+  async function loadNamazTime() {
+    try {
+      let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': API_KEY }
+      });
+      let data = await res.json();
+      if(document.getElementById('displayTime')) {
+        document.getElementById('displayTime').innerText = data.record.namazTime;
+      }
+    } catch (e) {
+      console.log("Error loading time");
+    }
+  }
+
+  async function saveNamazTime(newTime) {
+    try {
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify({ namazTime: newTime })
+      });
+      alert("Time internet par save ho gaya!");
+      loadNamazTime();
+    } catch (e) {
+      alert("Save nahi ho saka!");
+    }
+  }
+
+  window.onload = loadNamazTime;
 </script>
+
 </body>
 </html>
