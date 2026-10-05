@@ -1,6 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+  <!-- Firebase Libraries -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAum92XykMMUazFNBrOtk33rIBj1BXf9-Y",
+    authDomain: "jamia-masjid-ghousia.firebaseapp.com",
+    databaseURL: "https://jamia-masjid-ghousia-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "jamia-masjid-ghousia",
+    storageBucket: "jamia-masjid-ghousia.firebasestorage.app",
+    messagingSenderId: "1001079604123",
+    appId: "1:1001079604123:web:62b7510f9ad9915a89573e",
+    measurementId: "G-GG72MQWGBY"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // Realtime Sync Across Devices
+  database.ref('prayerTimes').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      if (data.fajr && document.getElementById('fajr-time')) document.getElementById('fajr-time').innerText = data.fajr;
+      if (data.dhuhr && document.getElementById('dhuhr-time')) document.getElementById('dhuhr-time').innerText = data.dhuhr;
+      if (data.asr && document.getElementById('asr-time')) document.getElementById('asr-time').innerText = data.asr;
+      if (data.maghrib && document.getElementById('maghrib-time')) document.getElementById('maghrib-time').innerText = data.maghrib;
+      if (data.isha && document.getElementById('isha-time')) document.getElementById('isha-time').innerText = data.isha;
+      if (data.juma && document.getElementById('juma-time')) document.getElementById('juma-time').innerText = data.juma;
+    }
+  });
+
+  function savePrayerTimesToFirebase(newTimes) {
+    database.ref('prayerTimes').set(newTimes)
+      .then(() => alert("Time Cloud par update ho gaya!"))
+      .catch((err) => alert("Error: " + err.message));
+  }
+</script>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SVRGRCN1V"></script>
 <script>
