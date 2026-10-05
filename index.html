@@ -781,50 +781,7 @@ function renderMonth(idx){
 }
 
 renderMonth(todayMonthIdx);
- // Google Sheet Integration
-   const SHEET_ID = '1OuFFFQe_x1yVn5EXWJ9Q1MBZsPptmAfKihCuJwHhuCI';
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
-async function loadTimings() {
-    try {
-      const res = await fetch(SHEET_URL);
-      const text = await res.text();
-      const json = JSON.parse(text.substring(47, text.length - 2));
-      const rows = json.table.rows;
-
-      const times = [
-        rows[0]?.c[2]?.f || rows[0]?.c[2]?.v || '', // Fajr (Row 1, Col C)
-        rows[1]?.c[2]?.f || rows[1]?.c[2]?.v || '', // Zuhr (Row 2, Col C)
-        rows[2]?.c[2]?.f || rows[2]?.c[2]?.v || '', // Asr (Row 3, Col C)
-        rows[3]?.c[2]?.f || rows[3]?.c[2]?.v || '', // Maghrib (Row 4, Col C)
-        rows[4]?.c[2]?.f || rows[4]?.c[2]?.v || ''  // Isha (Row 5, Col C)
-      ];
-
-      // 1. Direct IDs se map karein
-      const ids = ['fajr-time', 'zuhr-time', 'asr-time', 'maghrib-time', 'isha-time'];
-      ids.forEach((id, idx) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = times[idx];
-      });
-
-      // 2. Class / Table Cells se map karein (Fallback)
-      const cards = document.querySelectorAll('.grid > div, table tbody tr');
-      if (cards.length >= 5) {
-        times.forEach((time, idx) => {
-          const timeEl = cards[idx].querySelector('.text-2xl, .text-3xl, td:last-child, span');
-          if (timeEl && time) timeEl.innerText = time;
-        });
-      }
-    } catch (err) {
-      console.error("Error loading sheet:", err);
-    }
-  }
-
-  // Auto-run on page load & refresh every 10 seconds
-  loadTimings();
-  setInterval(loadTimings, 10000);
-        });
-      }
     } catch (err) {
       console.error("Error loading sheet:", err);
     }
