@@ -1,42 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <!-- Firebase Libraries -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-<script>
-  // Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAum92XykMMUazFNBrOtk33rIBj1BXf9-Y",
-    authDomain: "jamia-masjid-ghousia.firebaseapp.com",
-    databaseURL: "https://jamia-masjid-ghousia-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "jamia-masjid-ghousia",
-    storageBucket: "jamia-masjid-ghousia.firebasestorage.app",
-    messagingSenderId: "1001079604123",
-    appId: "1:1001079604123:web:62b7510f9ad9915a89573e",
-    measurementId: "G-GG72MQWGBY"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
-function saveSettings() {
-    localStorage.setItem(LS_KEY, JSON.stringify(settings));
-    
-    // Cloud database par save karne ke liye
-    savePrayerTimesToFirebase(settings);
-    
-    closeModal('settingsModal');
-    renderPrayerCards();
-}
-
-  function savePrayerTimesToFirebase(newTimes) {
-    database.ref('prayerTimes').set(newTimes)
-      .then(() => alert("Time Cloud par update ho gaya!"))
-      .catch((err) => alert("Error: " + err.message));
-  }
-</script>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SVRGRCN1V"></script>
 <script>
@@ -475,7 +439,7 @@ function saveSettings() {
     </div>
   </div>
 </div>
- 
+
 <!-- ============ ADMIN / SETTINGS MODAL ============ -->
 <div id="settingsModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4" style="background:rgba(11,68,41,0.55);">
   <div class="rounded-2xl w-full max-w-md p-6 relative shadow-2xl" style="background:var(--masjid-cream);">
@@ -598,48 +562,16 @@ const DEFAULTS = {
 };
 const LS_KEY = 'masjidSettings_v1';
 
-function loadSettings() {
-  try {
+function loadSettings(){
+  try{
     const raw = localStorage.getItem(LS_KEY);
-    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS };
-  } catch (e) {
-    return { ...DEFAULTS };
-  }
+    if(!raw) return { ...DEFAULTS };
+    const parsed = JSON.parse(raw);
+    return { ...DEFAULTS, ...parsed };
+  }catch(e){ return { ...DEFAULTS }; }
 }
-
-// Firebase Realtime Listener
-if (typeof firebase !== 'undefined' && firebase.database) {
-  firebase.database().ref('prayerTimes').on('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      localStorage.setItem(LS_KEY, JSON.stringify(data));
-      settings = { ...DEFAULTS, ...data };
-      if (typeof renderPrayerCards === 'function') renderPrayerCards();
-    }
-  });
-}
-
-function saveSettings(s) {
-  // Local storage backup
+function saveSettings(s){
   localStorage.setItem(LS_KEY, JSON.stringify(s));
-  
-  // Firebase Realtime Database Save
-  if (typeof firebase !== 'undefined' && firebase.database) {
-    firebase.database().ref('prayerTimes').set({
-      fajr: s.fajr,
-      zuhr: s.zuhr,
-      asr: s.asr,
-      isha: s.isha,
-      jumma: s.jumma
-    }).then(() => {
-      alert("Namaz timing Firebase Cloud par live save ho gaya!");
-    }).catch((err) => {
-      alert("Error: " + err.message);
-    });
-  } else {
-    alert("Saved to local browser storage only.");
-  }
-
 }
 function timeStrToMins(str){
   const [h,m] = str.split(':').map(Number);
@@ -849,6 +781,24 @@ function renderMonth(idx){
 }
 
 renderMonth(todayMonthIdx);
+ // Google Sheet Integration
+  const SHEET_ID = 'YOUR_SHEET_ID_HERE'; 
+  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+  async function loadTimings() {
+    try {
+      const res = await fetch(SHEET_URL);
+      const text = await res.text();
+      const json = JSON.parse(text.substring(47, text.length - 2));
+      const rows = json.table.rows;
+      console.log("Sheet Data Loaded:", rows);
+    } catch (err) {
+      console.error("Error loading sheet:", err);
+    }
+  }
+
+  loadTimings();
+  setInterval(loadTimings, 10000);
 </script>
 </body>
 </html>
