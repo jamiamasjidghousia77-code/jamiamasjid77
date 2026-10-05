@@ -853,51 +853,61 @@ function parseCSV(text) {
   return rows;
 }
 
-async function fetchSheetCSV() {
-  let lastErr;
-  for (const url of SHEET_URLS) {
-    try {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      // Google returns a sign-in HTML page (status 200) when the sheet isn't shared
-      if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('Got an HTML page instead of CSV - is the sheet shared/published?');
-      return text;
-    } catch (err) {
-      lastErr = err;
-    }
+// Status line under the date, so a failure is visible on the page (not only in the console)
+const sheetStatus = document.createElement('p');
+sheetStatus.className = 'text-[11px] mt-1 text-[var(--masjid-ink)]/60';
+document.getElementById('todayDateLabel').after(sheetStatus);
+
+// Fetch one URL and return { key: minutes } or throw a descriptive error
+async function readTimingsFrom(url) {
+  const res = await fetch(url + '&_=' + Date.now(), { cache: 'no-store' });
+  if (!res.ok) throw new Error(`HTTP ${res.status} (sheet not shared?)`);
+  const text = await res.text();
+  // Google returns a sign-in HTML page (status 200) when the sheet isn't shared
+  if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('Google returned a web page, not CSV - share the sheet as "Anyone with the link can view"');
+
+  const rows = parseCSV(text);
+  const headerIdx = rows.findIndex(r => {
+    const h = r.map(normCell);
+    return h.includes('prayer name') && h.includes('time');
+  });
+  if (headerIdx === -1) {
+    throw new Error('Headers "Prayer Name" and "Time" not found. First row was: ' + JSON.stringify(rows[0] || []) + ' (wrong tab/gid?)');
   }
-  throw lastErr;
+  const header = rows[headerIdx].map(normCell);
+  const nameCol = header.indexOf('prayer name');
+  const timeCol = header.indexOf('time');
+
+  const found = {};
+  rows.slice(headerIdx + 1).forEach(r => {
+    const key = PRAYER_ALIASES[normCell(r[nameCol])];
+    if (!key) return;                                  // ignore rows that aren't one of the five prayers
+    const mins = textToMins(r[timeCol], key);
+    if (mins != null) found[key] = mins;
+  });
+  if (!Object.keys(found).length) throw new Error('No valid prayer times found in the sheet');
+  return found;
 }
 
 async function loadTimings() {
   if (document.hidden) return;               // don't poll from background tabs
-  try {
-    const rows = parseCSV(await fetchSheetCSV());
-
-    const headerIdx = rows.findIndex(r => {
-      const h = r.map(normCell);
-      return h.includes('prayer name') && h.includes('time');
-    });
-    if (headerIdx === -1) throw new Error('Columns "Prayer Name" and "Time" not found in sheet');
-    const header = rows[headerIdx].map(normCell);
-    const nameCol = header.indexOf('prayer name');
-    const timeCol = header.indexOf('time');
-
-    let changed = false;
-    rows.slice(headerIdx + 1).forEach(r => {
-      const key = PRAYER_ALIASES[normCell(r[nameCol])];
-      if (!key) return;                                  // ignore rows that aren't one of the five prayers
-      const mins = textToMins(r[timeCol], key);
-      if (mins != null && sheetMins[key] !== mins) {     // blank/invalid cell keeps last good value
-        sheetMins[key] = mins;
-        changed = true;
+  const errors = [];
+  for (const url of SHEET_URLS) {
+    try {
+      const found = await readTimingsFrom(url);
+      let changed = false;
+      for (const key in found) {
+        if (sheetMins[key] !== found[key]) { sheetMins[key] = found[key]; changed = true; }
       }
-    });
-    if (changed) renderPrayerCards();        // re-render only when a time actually changed
-  } catch (err) {
-    console.error('Error loading sheet:', err);
+      if (changed) renderPrayerCards();      // re-render only when a time actually changed
+      sheetStatus.textContent = 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      return;
+    } catch (err) {
+      errors.push(err.message || String(err));
+    }
   }
+  console.error('Error loading sheet:', errors);
+  sheetStatus.textContent = 'Could not sync from sheet - showing saved timings. (' + errors[errors.length - 1] + ')';
 }
 
 loadTimings();
