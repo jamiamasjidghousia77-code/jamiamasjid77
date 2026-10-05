@@ -592,7 +592,9 @@ document.getElementById('todayDateLabel').textContent =
    Minutes-from-midnight per prayer, e.g. { fajr: 315, isha: 1190 }.
    Declared before renderPrayerCards() runs so the first render can read it.
    A prayer missing here falls back to the admin settings / sunset calendar. */
-const sheetMins = {};
+const sheetMins = {};   // Jamaat time per prayer (minutes)
+const sheetAzan = {};   // Azan time per prayer (minutes)
+const sheetNotes = {};  // optional Note text per prayer
 
 function textToMins(t, key) {
   const m = /(\d{1,2}):(\d{2})(?::\d{2})?\s*([AP]M)?/i.exec(t || '');
@@ -618,14 +620,29 @@ function renderJumma(){
 
 function renderPrayerCards(){
   cardsWrap.innerHTML = '';
-  const PRAYERS = [
-    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',     min: sheetMins.fajr ?? timeStrToMins(settings.fajr) },
-    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',           min: sheetMins.zuhr ?? timeStrToMins(settings.zuhr) },
-    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt',min: sheetMins.asr ?? timeStrToMins(settings.asr) },
-    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',  min: sheetMins.maghrib ?? (todayVals.maghrib + (parseInt(settings.maghribOffset)||0)), note:'Sunset-based' },
-    { key:'isha',    label:'Isha',    icon:'fa-moon',          min: sheetMins.isha ?? timeStrToMins(settings.isha) },
+  // Jamaat is the main time; Azan is shown small above it. Falls back to Admin Settings / sunset calendar.
+  function prayerTimes(key, fallbackMins){
+    const jamaat = sheetMins[key], azan = sheetAzan[key];
+    return {
+      min: jamaat ?? azan ?? fallbackMins,
+      azan: (jamaat != null && azan != null && azan !== jamaat) ? azan : null,
+      fromSheet: jamaat != null || azan != null
+    };
+  }
+  const defs = [
+    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',      fallback: timeStrToMins(settings.fajr) },
+    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',            fallback: timeStrToMins(settings.zuhr) },
+    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt', fallback: timeStrToMins(settings.asr) },
+    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',   fallback: todayVals.maghrib + (parseInt(settings.maghribOffset)||0), defaultNote:'Sunset-based' },
+    { key:'isha',    label:'Isha',    icon:'fa-moon',           fallback: timeStrToMins(settings.isha) },
   ];
-  const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(settings.jumma), note:'Fridays only' };
+  const PRAYERS = defs.map(d => {
+    const t = prayerTimes(d.key, d.fallback);
+    return { key:d.key, label:d.label, icon:d.icon, min:t.min, azan:t.azan,
+             note: sheetNotes[d.key] || (t.fromSheet ? '' : (d.defaultNote || '')) };
+  });
+  const jt = prayerTimes('jumma', timeStrToMins(settings.jumma));
+  const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min:jt.min, azan:jt.azan, note: sheetNotes.jumma || 'Fridays only' };
 
   const nowMins = now.getHours()*60 + now.getMinutes();
   let nextIdx = PRAYERS.findIndex(p => p.min > nowMins);
@@ -650,7 +667,10 @@ function renderPrayerCards(){
         </div>
       </div>
       <div class="flex items-center gap-2 shrink-0">
-        <p class="text-lg font-bold text-[var(--masjid-deep)]">${fmt(p.min)}</p>
+        <div class="text-right">
+          ${p.azan != null ? `<p class="text-[10px] text-[var(--masjid-ink)]/60">Azan ${fmt(p.azan)}</p>` : ''}
+          <p class="text-lg font-bold text-[var(--masjid-deep)] leading-tight">${fmt(p.min)}</p>
+        </div>
         ${isNext ? `<span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:var(--masjid-gold);color:var(--masjid-deep);"><span class="w-1.5 h-1.5 rounded-full bg-[var(--masjid-deep)] pulse-dot"></span> Next</span>` : ''}
       </div>
     `;
@@ -802,26 +822,24 @@ function renderMonth(idx){
 
 renderMonth(todayMonthIdx);
 
-/* ---------- Google Sheet integration (CSV) ----------
-   Sheet columns: "Prayer Name" (Fajr, Zuhr, Asr, Maghrib, Isha) and "Time".
-   Rows are matched by prayer name, so row order does not matter.
-   The sheet must be shared / published so anyone with the link can view it.
-   Values go into sheetMins (not straight into the DOM), so cards re-render
-   cleanly and the monthly schedule table is never touched. */
-const SHEET_ID  = '1OuFFFQe_x1yVn5EXWJ9Q1MBZspPtmAfKihCuJwHhuCI';
-const SHEET_GID = '1956459073';
-const SHEET_URLS = [
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`,
-  // Fallback: same data, and this endpoint reliably allows browser (CORS) requests
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`
-];
+/* ---------- Google Sheet integration (published CSV) ----------
+   Sheet columns: "Prayer Name", "Azan", "Jamaat", "Note".
+   Rows are matched by prayer name (Fajr, Zuhr, Asr, Maghrib, Isha, optionally Jumma),
+   so row order does not matter. Jamaat is the main time on each card, Azan is shown
+   small above it, Note replaces the small caption under the prayer name.
+   Values go into sheetMins/sheetAzan/sheetNotes (not straight into the DOM), so cards
+   re-render cleanly and the monthly schedule table is never touched. */
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjfUR6IHTOmTAnD1tZu0v4lcmywG43uffAO4yFm7aE0xqNFw-TXDNbphgQXV9pTpgrBdy2piGIkDeI/pub?output=csv';
 const PRAYER_ALIASES = {
   fajr: 'fajr',
   zuhr: 'zuhr', dhuhr: 'zuhr', zohar: 'zuhr',
   asr: 'asr',
   maghrib: 'maghrib',
-  isha: 'isha', esha: 'isha'
+  isha: 'isha', esha: 'isha',
+  jumma: 'jumma', jummah: 'jumma', jumuah: 'jumma'
 };
+const AZAN_HEADERS   = ['azan', 'adhan', 'azaan'];
+const JAMAAT_HEADERS = ['jamaat', 'jamat', 'jamah'];
 
 const normCell = s => (s || '').trim().toLowerCase().replace(/\s+/g, ' ');
 
@@ -853,61 +871,67 @@ function parseCSV(text) {
   return rows;
 }
 
+// Turn CSV text into { azan:{key:mins}, jamaat:{key:mins}, note:{key:text} }; throws a clear error if the layout is wrong
+function extractTimings(text) {
+  const rows = parseCSV(text);
+  const colOf = (h, names) => h.findIndex(c => names.includes(c));
+  const headerIdx = rows.findIndex(r => {
+    const h = r.map(normCell);
+    return h.includes('prayer name') && (colOf(h, AZAN_HEADERS) !== -1 || colOf(h, JAMAAT_HEADERS) !== -1);
+  });
+  if (headerIdx === -1) {
+    throw new Error('Headers "Prayer Name", "Azan", "Jamaat" not found. First row was: ' + JSON.stringify(rows[0] || []));
+  }
+  const h = rows[headerIdx].map(normCell);
+  const nameCol = h.indexOf('prayer name');
+  const azanCol = colOf(h, AZAN_HEADERS);
+  const jamaatCol = colOf(h, JAMAAT_HEADERS);
+  const noteCol = h.indexOf('note');
+
+  const out = { azan: {}, jamaat: {}, note: {} };
+  rows.slice(headerIdx + 1).forEach(r => {
+    const key = PRAYER_ALIASES[normCell(r[nameCol])];
+    if (!key) return;                                   // ignore rows that aren't a known prayer
+    const azan = azanCol  !== -1 ? textToMins(r[azanCol], key)   : null;
+    const jam  = jamaatCol !== -1 ? textToMins(r[jamaatCol], key) : null;
+    if (azan != null) out.azan[key] = azan;
+    if (jam  != null) out.jamaat[key] = jam;
+    const note = noteCol !== -1 ? (r[noteCol] || '').trim() : '';
+    if (note) out.note[key] = note;
+  });
+  if (!Object.keys(out.azan).length && !Object.keys(out.jamaat).length) {
+    throw new Error('No valid Azan/Jamaat times found in the sheet');
+  }
+  return out;
+}
+
 // Status line under the date, so a failure is visible on the page (not only in the console)
 const sheetStatus = document.createElement('p');
 sheetStatus.className = 'text-[11px] mt-1 text-[var(--masjid-ink)]/60';
 document.getElementById('todayDateLabel').after(sheetStatus);
 
-// Fetch one URL and return { key: minutes } or throw a descriptive error
-async function readTimingsFrom(url) {
-  const res = await fetch(url + '&_=' + Date.now(), { cache: 'no-store' });
-  if (!res.ok) throw new Error(`HTTP ${res.status} (sheet not shared?)`);
-  const text = await res.text();
-  // Google returns a sign-in HTML page (status 200) when the sheet isn't shared
-  if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('Google returned a web page, not CSV - share the sheet as "Anyone with the link can view"');
-
-  const rows = parseCSV(text);
-  const headerIdx = rows.findIndex(r => {
-    const h = r.map(normCell);
-    return h.includes('prayer name') && h.includes('time');
-  });
-  if (headerIdx === -1) {
-    throw new Error('Headers "Prayer Name" and "Time" not found. First row was: ' + JSON.stringify(rows[0] || []) + ' (wrong tab/gid?)');
-  }
-  const header = rows[headerIdx].map(normCell);
-  const nameCol = header.indexOf('prayer name');
-  const timeCol = header.indexOf('time');
-
-  const found = {};
-  rows.slice(headerIdx + 1).forEach(r => {
-    const key = PRAYER_ALIASES[normCell(r[nameCol])];
-    if (!key) return;                                  // ignore rows that aren't one of the five prayers
-    const mins = textToMins(r[timeCol], key);
-    if (mins != null) found[key] = mins;
-  });
-  if (!Object.keys(found).length) throw new Error('No valid prayer times found in the sheet');
-  return found;
-}
-
 async function loadTimings() {
   if (document.hidden) return;               // don't poll from background tabs
-  const errors = [];
-  for (const url of SHEET_URLS) {
-    try {
-      const found = await readTimingsFrom(url);
-      let changed = false;
-      for (const key in found) {
-        if (sheetMins[key] !== found[key]) { sheetMins[key] = found[key]; changed = true; }
-      }
-      if (changed) renderPrayerCards();      // re-render only when a time actually changed
-      sheetStatus.textContent = 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-      return;
-    } catch (err) {
-      errors.push(err.message || String(err));
-    }
+  try {
+    const res = await fetch(SHEET_URL + '&_=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('Google returned a web page, not CSV - re-publish the sheet as CSV');
+    const t = extractTimings(text);
+
+    let changed = false;
+    const apply = (target, data) => {
+      for (const k in data) if (target[k] !== data[k]) { target[k] = data[k]; changed = true; }
+    };
+    apply(sheetMins, t.jamaat);     // blank/invalid cells keep the last good value
+    apply(sheetAzan, t.azan);
+    apply(sheetNotes, t.note);
+    if (changed) renderPrayerCards();        // re-render only when something actually changed
+    sheetStatus.textContent = 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  } catch (err) {
+    console.error('Error loading sheet:', err);
+    sheetStatus.textContent = 'Could not sync from sheet - showing saved timings. (' + (err.message || err) + ')';
   }
-  console.error('Error loading sheet:', errors);
-  sheetStatus.textContent = 'Could not sync from sheet - showing saved timings. (' + errors[errors.length - 1] + ')';
 }
 
 loadTimings();
