@@ -601,16 +601,32 @@ const DEFAULTS = {
 };
 const LS_KEY = 'masjidSettings_v1';
 
-function loadSettings(){
-  try{
+function loadSettings() {
+  try {
     const raw = localStorage.getItem(LS_KEY);
-    if(!raw) return { ...DEFAULTS };
-    const parsed = JSON.parse(raw);
-    return { ...DEFAULTS, ...parsed };
-  }catch(e){ return { ...DEFAULTS }; }
+    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS };
+  } catch (e) {
+    return { ...DEFAULTS };
+  }
 }
-function saveSettings(s){
+
+// Firebase Realtime Listener
+if (typeof firebase !== 'undefined' && firebase.database) {
+  firebase.database().ref('prayerTimes').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      localStorage.setItem(LS_KEY, JSON.stringify(data));
+      settings = { ...DEFAULTS, ...data };
+      if (typeof renderPrayerCards === 'function') renderPrayerCards();
+    }
+  });
+}
+
+function saveSettings(s) {
   localStorage.setItem(LS_KEY, JSON.stringify(s));
+  if (typeof firebase !== 'undefined' && firebase.database) {
+    firebase.database().ref('prayerTimes').set(s);
+  }
 }
 function timeStrToMins(str){
   const [h,m] = str.split(':').map(Number);
