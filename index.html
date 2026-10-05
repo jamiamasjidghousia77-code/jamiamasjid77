@@ -782,19 +782,27 @@ function renderMonth(idx){
 
 renderMonth(todayMonthIdx);
  // Google Sheet Integration
-  const SHEET_ID = 'YOUR_SHEET_ID_HERE'; 
+   const SHEET_ID = '1OuFFFQe_x1yVn5EXWJ9Q1MBZsPptmAfKihCuJwHhuCI';
   const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
-  async function loadTimings() {
+ async function loadTimings() {
     try {
       const res = await fetch(SHEET_URL);
       const text = await res.text();
       const json = JSON.parse(text.substring(47, text.length - 2));
       const rows = json.table.rows;
-      console.log("Sheet Data Loaded:", rows);
+
+      // Google Sheet (Column B) se timing UI par map karne ke liye:
+      if (rows[0] && rows[0].c[1]) document.getElementById('fajr-time').innerText = rows[0].c[1].v;
+      if (rows[1] && rows[1].c[1]) document.getElementById('zuhr-time').innerText = rows[1].c[1].v;
+      if (rows[2] && rows[2].c[1]) document.getElementById('asr-time').innerText = rows[2].c[1].v;
+      if (rows[3] && rows[3].c[1]) document.getElementById('maghrib-time').innerText = rows[3].c[1].v;
+      if (rows[4] && rows[4].c[1]) document.getElementById('isha-time').innerText = rows[4].c[1].v;
+
     } catch (err) {
       console.error("Error loading sheet:", err);
     }
+  }
   }
 
   loadTimings();
