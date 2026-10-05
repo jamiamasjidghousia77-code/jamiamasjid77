@@ -625,7 +625,7 @@ if (typeof firebase !== 'undefined' && firebase.database) {
 function saveSettings(s) {
   localStorage.setItem(LS_KEY, JSON.stringify(s));
   if (typeof firebase !== 'undefined' && firebase.database) {
-    firebase.database().ref('prayerTimes').set(s);
+    firebase.database().ref('prayerTimes').set(s); 
   }
 }
 function timeStrToMins(str){
