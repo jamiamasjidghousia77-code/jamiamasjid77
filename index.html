@@ -21,15 +21,15 @@
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 
-// Realtime Live Sync Across Devices
-database.ref('prayerTimes').on('value', (snapshot) => {
-  const data = snapshot.val();
-  if (data) {
-    localStorage.setItem(LS_KEY, JSON.stringify(data));
-    settings = { ...DEFAULTS, ...data };
-    if (typeof renderPrayerCards === 'function') renderPrayerCards();
-  }
-});
+function saveSettings() {
+    localStorage.setItem(LS_KEY, JSON.stringify(settings));
+    
+    // Cloud database par save karne ke liye
+    savePrayerTimesToFirebase(settings);
+    
+    closeModal('settingsModal');
+    renderPrayerCards();
+}
 
   function savePrayerTimesToFirebase(newTimes) {
     database.ref('prayerTimes').set(newTimes)
