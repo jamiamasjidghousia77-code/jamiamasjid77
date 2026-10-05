@@ -793,24 +793,36 @@ async function loadTimings() {
       const rows = json.table.rows;
 
       const times = [
-        rows[0]?.c[1]?.f || rows[0]?.c[1]?.v || '',
-        rows[1]?.c[1]?.f || rows[1]?.c[1]?.v || '',
-        rows[2]?.c[1]?.f || rows[2]?.c[1]?.v || '',
-        rows[3]?.c[1]?.f || rows[3]?.c[1]?.v || '',
-        rows[4]?.c[1]?.f || rows[4]?.c[1]?.v || ''
+        rows[0]?.c[1]?.f || rows[0]?.c[1]?.v || '', // Fajr
+        rows[1]?.c[1]?.f || rows[1]?.c[1]?.v || '', // Zuhr
+        rows[2]?.c[1]?.f || rows[2]?.c[1]?.v || '', // Asr
+        rows[3]?.c[1]?.f || rows[3]?.c[1]?.v || '', // Maghrib
+        rows[4]?.c[1]?.f || rows[4]?.c[1]?.v || ''  // Isha
       ];
 
+      // 1. Direct IDs se map karein
       const ids = ['fajr-time', 'zuhr-time', 'asr-time', 'maghrib-time', 'isha-time'];
       ids.forEach((id, idx) => {
         const el = document.getElementById(id);
         if (el) el.innerText = times[idx];
       });
 
+      // 2. Class / Table Cells se map karein (Fallback)
       const cards = document.querySelectorAll('.grid > div, table tbody tr');
       if (cards.length >= 5) {
         times.forEach((time, idx) => {
           const timeEl = cards[idx].querySelector('.text-2xl, .text-3xl, td:last-child, span');
           if (timeEl && time) timeEl.innerText = time;
+        });
+      }
+    } catch (err) {
+      console.error("Error loading sheet:", err);
+    }
+  }
+
+  // Auto-run on page load & refresh every 10 seconds
+  loadTimings();
+  setInterval(loadTimings, 10000);
         });
       }
     } catch (err) {
