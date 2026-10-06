@@ -795,10 +795,13 @@ function to24h(str){
 
 async function loadTimings(){
   try{
+  async function loadTimings(){
+  try{
     const res = await fetch(SHEET_URL);
     const d = await res.json();
     console.log("Sheet Data Received:", d);
 
+  // Time parsing and setting updates
     const f = to24h(d.fajr), z = to24h(d.zuhr), a = to24h(d.asr),
           mg = to24h(d.maghrib), i = to24h(d.isha);
           
@@ -806,10 +809,14 @@ async function loadTimings(){
     if(z) settings.zuhr = z;
     if(a) settings.asr = a;
     if(i) settings.isha = i;
-    settings.maghribFixed = mg || null;
+    if(mg) settings.maghribFixed = mg;
 
-    renderPrayerCards();
+    // Direct Cards Re-render
+    if (typeof renderPrayerCards === 'function') {
+      renderPrayerCards();
+    }
   }catch(err){ console.error('Timings error:', err); }
 }
+
 loadTimings();
 setInterval(loadTimings, 5 * 60 * 1000);
