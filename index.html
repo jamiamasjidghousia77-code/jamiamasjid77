@@ -224,6 +224,7 @@
     <div class="text-center mb-8">
       <h2 class="font-display text-2xl sm:text-3xl text-[var(--masjid-deep)]">Today's Jamaat Timings</h2>
       <p class="text-sm text-[var(--masjid-green)] mt-1" id="todayDateLabel"></p>
+      <p class="text-[11px] text-[var(--masjid-ink)]/50 mt-1" id="sheetStatus" aria-live="polite"></p>
     </div>
 
     <div id="prayerCards" class="flex flex-col gap-3 max-w-md mx-auto">
@@ -462,7 +463,7 @@
 
     <!-- Step 2: edit form -->
     <form id="settingsForm" class="hidden space-y-3">
-      <p class="text-xs text-[var(--masjid-ink)]/60 -mt-1 mb-2">Saved changes apply instantly on this device (browser local storage) — no code changes needed.</p>
+      <p class="text-xs text-[var(--masjid-ink)]/60 -mt-1 mb-2">Saved changes apply on this device only. Times typed in the Google Sheet always take priority over these values.</p>
 
       <div>
         <label class="block text-xs font-semibold text-[var(--masjid-deep)] mb-1">Fajr Jamaat</label>
@@ -501,6 +502,13 @@
 </div>
 
 <script>
+/* =====================================================================
+   CONFIGURATION — the ONLY line you need to edit when the Google Apps
+   Script web-app URL changes (Deploy > Manage deployments > Web app URL).
+   ===================================================================== */
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxexZJJYMLQgxIRTiD1R_w7m2bvylAknN92bBi6cDwV0JDcHphqX-Tu0V2aMMrbUyzjDA/exec";
+const REFRESH_SECONDS = 60;   // how often the page re-checks the sheet
+
 /* ---------- Mobile menu ---------- */
 document.getElementById('menuBtn').addEventListener('click', () => {
   document.getElementById('mobileMenu').classList.toggle('hidden');
@@ -579,6 +587,7 @@ function timeStrToMins(str){
 }
 
 let settings = loadSettings();
+let sheetTimes = {};   // values coming from the Google Sheet (never saved to admin settings)
 
 const now = new Date();
 const todayMonthIdx = now.getMonth();
@@ -596,16 +605,27 @@ function renderJumma(){
   // a no-op kept only so existing calls elsewhere don't error.
 }
 
+function getEffective(){
+  // Priority: Google Sheet values > this device's admin settings > defaults
+  return { ...settings, ...sheetTimes };
+}
+
 function renderPrayerCards(){
+  const now = new Date();
+  const todayVals = dayTimes(now.getMonth(), now.getDate());
+  const eff = getEffective();
   cardsWrap.innerHTML = '';
+
   const PRAYERS = [
-    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',     min: timeStrToMins(settings.fajr) },
-    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',           min: timeStrToMins(settings.zuhr) },
-    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt',min: timeStrToMins(settings.asr) },
-   { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun', min: settings.maghribFixed ? timeStrToMins(settings.maghribFixed) : todayVals.maghrib + (parseInt(settings.maghribOffset)||0), note:'Sunset-based' },
-    { key:'isha',    label:'Isha',    icon:'fa-moon',          min: timeStrToMins(settings.isha) },
+    { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',      min: timeStrToMins(eff.fajr) },
+    { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',            min: timeStrToMins(eff.zuhr) },
+    { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt', min: timeStrToMins(eff.asr) },
+    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',
+      min: eff.maghribFixed ? timeStrToMins(eff.maghribFixed) : todayVals.maghrib + (parseInt(eff.maghribOffset) || 0),
+      note: eff.maghribFixed ? 'Set by committee' : 'Sunset-based' },
+    { key:'isha',    label:'Isha',    icon:'fa-moon',           min: timeStrToMins(eff.isha) },
   ];
-  const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(settings.jumma), note:'Fridays only' };
+  const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(eff.jumma), note:'Fridays only' };
 
   const nowMins = now.getHours()*60 + now.getMinutes();
   let nextIdx = PRAYERS.findIndex(p => p.min > nowMins);
@@ -615,7 +635,8 @@ function renderPrayerCards(){
   const allCards = [...PRAYERS, jumma];
 
   allCards.forEach((p, i) => {
-    const isNext = (p.key !== 'jumma' && i === nextIdx) || (p.key === 'jumma' && isFriday && jumma.min > nowMins && nowMins > timeStrToMins(settings.fajr));
+    const isNext = (p.key !== 'jumma' && i === nextIdx) ||
+                   (p.key === 'jumma' && isFriday && jumma.min > nowMins && nowMins > timeStrToMins(eff.fajr));
     const card = document.createElement('div');
     card.className = `prayer-card glass rounded-2xl px-5 py-3.5 flex items-center justify-between gap-4 ${isNext ? 'is-next' : ''}`;
     card.innerHTML = `
@@ -782,69 +803,144 @@ function renderMonth(idx){
 
 renderMonth(todayMonthIdx);
 
-// Google Sheet Integration
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxexZJJYMLQgxIRTiD1R_w7m2bvylAknN92bBi6cDwV0JDcHphqX-Tu0V2aMMrbUyzjDA/exec';
-function to24h(str){
-  const m = String(str||'').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
-  if(!m) return null;
-  let h = parseInt(m[1]), min = m[2], ap = (m[3]||'').toUpperCase();
-  if(ap === 'PM' && h < 12) h += 12;
-  if(ap === 'AM' && h === 12) h = 0;
-  return String(h).padStart(2,'0') + ':' + min;
+/* =====================================================================
+   GOOGLE SHEET INTEGRATION
+   Sheet:  Row 1 = fajr | zuhr | asr | maghrib | isha | jumma
+           Row 2 = the times (e.g. 5:15 AM  or  17:15)
+   ===================================================================== */
+const SHEET_CACHE_KEY = 'masjidSheetTimes_v1';
+const sheetStatusEl = document.getElementById('sheetStatus');
+
+function setSheetStatus(msg){
+  if(sheetStatusEl) sheetStatusEl.textContent = msg || '';
 }
 
-async function loadTimings(){
-  try{
-  async function loadTimings(){
-  try{
-    const res = await fetch(SHEET_URL);
-    const d = await res.json();
-    console.log("Sheet Data Received:", d);
+/* Accepts "5:15 AM", "5:15:00 pm", "17:15", or a day-fraction number
+   (Google Sheets stores times internally as 0–1). Returns "HH:MM" or null. */
+function normalizeTime(value){
+  if(value === null || value === undefined || value === '') return null;
 
-  // Time parsing and setting updates
-    const f = to24h(d.fajr), z = to24h(d.zuhr), a = to24h(d.asr),
-          mg = to24h(d.maghrib), i = to24h(d.isha);
-          
-    if(f) settings.fajr = f;
-    if(z) settings.zuhr = z;
- <script>
-  const SHEET_URL = "AAPKA_GOOGLE_SCRIPT_URL_HERE";
-
-  function to24h(str) {
-    if (!str) return "";
-    let [time, modifier] = str.split(" ");
-    let [hours, minutes] = time.split(":");
-    if (hours === "12") hours = "00";
-    if (modifier === "PM") hours = parseInt(hours, 10) + 12;
-    return `${hours}:${minutes}`;
+  if(typeof value === 'number' && isFinite(value) && value >= 0 && value < 1){
+    const total = Math.round(value * 1440);
+    return String(Math.floor(total / 60) % 24).padStart(2,'0') + ':' + String(total % 60).padStart(2,'0');
   }
 
-  async function loadTimings() {
-    try {
-      const res = await fetch(SHEET_URL);
-      const d = await res.json();
-      console.log("Sheet Data Received:", d);
+  const m = String(value).trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*([AaPp])?\.?\s*[Mm]?\.?$/);
+  if(!m) return null;
+  let h = parseInt(m[1], 10);
+  const min = parseInt(m[2], 10);
+  const ap = (m[3] || '').toUpperCase();
+  if(min > 59) return null;
+  if(ap === 'P' && h < 12) h += 12;
+  if(ap === 'A' && h === 12) h = 0;
+  if(h > 23) return null;
+  return String(h).padStart(2,'0') + ':' + String(min).padStart(2,'0');
+}
 
-      const f = to24h(d.fajr),
-        z = to24h(d.zuhr),
-        a = to24h(d.asr),
-        mg = to24h(d.maghrib),
-        i = to24h(d.isha);
+/* Reads the JSON from the Apps Script and returns only valid times. */
+function parseSheetPayload(payload){
+  const src = (payload && typeof payload === 'object' && payload.data && typeof payload.data === 'object')
+    ? payload.data : payload;
+  if(!src || typeof src !== 'object') return {};
 
-      if (f) settings.fajr = f;
-      if (z) settings.zuhr = z;
-      if (a) settings.asr = a;
-      if (i) settings.isha = i;
-      if (mg) settings.maghribFixed = mg;
+  // case-insensitive keys, tolerant spellings
+  const lower = {};
+  Object.keys(src).forEach(k => { lower[String(k).trim().toLowerCase()] = src[k]; });
+  const pick = (...names) => {
+    for(const n of names){ if(lower[n] !== undefined && lower[n] !== '') return normalizeTime(lower[n]); }
+    return null;
+  };
 
-      if (typeof renderPrayerCards === "function") {
-        renderPrayerCards();
-      }
-    } catch (err) {
-      console.error("Timings error:", err);
+  const out = {};
+  const fajr = pick('fajr');
+  const zuhr = pick('zuhr','dhuhr','zohar','zuhar');
+  const asr  = pick('asr');
+  const mag  = pick('maghrib');
+  const isha = pick('isha');
+  const jum  = pick('jumma','jummah','jumah','jumuah','friday');
+  if(fajr) out.fajr = fajr;
+  if(zuhr) out.zuhr = zuhr;
+  if(asr)  out.asr  = asr;
+  if(mag)  out.maghribFixed = mag;   // blank in sheet => sunset-based Maghrib stays
+  if(isha) out.isha = isha;
+  if(jum)  out.jumma = jum;
+  return out;
+}
+
+function applySheetTimes(times, label){
+  sheetTimes = times;
+  renderPrayerCards();
+  setSheetStatus(label);
+}
+
+function loadCachedSheetTimes(){
+  try{
+    const raw = localStorage.getItem(SHEET_CACHE_KEY);
+    if(!raw) return false;
+    const cached = JSON.parse(raw);
+    if(cached && cached.times && Object.keys(cached.times).length){
+      applySheetTimes(cached.times, 'Showing last saved timings (offline)');
+      return true;
     }
+  }catch(e){ /* ignore corrupt cache */ }
+  return false;
+}
+
+let sheetFetchInFlight = false;
+
+async function loadTimings(){
+  if(sheetFetchInFlight) return;
+  if(!SPREADSHEET_URL || SPREADSHEET_URL.indexOf('http') !== 0){
+    console.warn('SPREADSHEET_URL is not set. Showing default timings.');
+    return;
   }
 
-  loadTimings();
-  setInterval(loadTimings, 5 * 60 * 1000);
+  sheetFetchInFlight = true;
+  const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 15000) : null;
+
+  try{
+    // Plain GET, no custom headers => no CORS pre-flight. The cache-buster
+    // makes sure an edited sheet is never served from an old cached response.
+    const url = SPREADSHEET_URL + (SPREADSHEET_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+    const res = await fetch(url, { method:'GET', cache:'no-store', redirect:'follow', signal: controller ? controller.signal : undefined });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+
+    const text = await res.text();
+    let payload;
+    try{ payload = JSON.parse(text); }
+    catch(e){ throw new Error('Response was not JSON. In Apps Script set Deploy > Web app > "Who has access" = Anyone, then redeploy.'); }
+
+    if(payload && payload.error) throw new Error('Apps Script error: ' + payload.error);
+
+    const times = parseSheetPayload(payload);
+    if(!Object.keys(times).length) throw new Error('No valid prayer times found in the sheet response.');
+
+    applySheetTimes(times, 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }));
+    try{ localStorage.setItem(SHEET_CACHE_KEY, JSON.stringify({ times, savedAt: Date.now() })); }catch(e){ /* storage may be blocked */ }
+  }catch(err){
+    const reason = (err && err.name === 'AbortError') ? 'Request timed out' : (err && err.message) || err;
+    console.warn('Could not load timings from the sheet:', reason);
+    if(!Object.keys(sheetTimes).length && !loadCachedSheetTimes()){
+      setSheetStatus('Showing standard timings (live sheet unavailable)');
+    }else if(Object.keys(sheetTimes).length){
+      setSheetStatus('Live update failed — showing last known timings');
+    }
+  }finally{
+    if(timer) clearTimeout(timer);
+    sheetFetchInFlight = false;
+  }
+}
+
+/* ---------- Start-up & live refresh ---------- */
+loadCachedSheetTimes();          // instant paint with last known sheet times
+loadTimings();                   // then fetch fresh data
+setInterval(loadTimings, REFRESH_SECONDS * 1000);
+setInterval(renderPrayerCards, 60 * 1000);   // keeps the "Next" badge correct
+document.addEventListener('visibilitychange', () => { if(!document.hidden) loadTimings(); });
+window.addEventListener('online', loadTimings);
+window.addEventListener('focus', loadTimings);
 </script>
+
+</body>
+</html>
