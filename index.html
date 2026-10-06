@@ -812,10 +812,7 @@ async function loadTimings(){
     if(mg) settings.maghribFixed = mg;
 
     // Direct Cards Re-render
-    if (typeof renderPrayerCards === 'function') {
-      renderPrayerCards();
-    }
-<script>
+ <script>
   const SHEET_URL = "AAPKA_GOOGLE_SCRIPT_URL_HERE";
 
   function to24h(str) {
@@ -845,17 +842,6 @@ async function loadTimings(){
       if (i) settings.isha = i;
       if (mg) settings.maghribFixed = mg;
 
-      if (typeof renderPrayerCards === "function") {
-        renderPrayerCards();
-      }
-    } catch (err) {
-      console.error("Timings error:", err);
-    }
-  }
-
-  loadTimings();
-  setInterval(loadTimings, 5 * 60 * 1000);
-</script>
       if (typeof renderPrayerCards === "function") {
         renderPrayerCards();
       }
