@@ -856,3 +856,14 @@ async function loadTimings(){
   loadTimings();
   setInterval(loadTimings, 5 * 60 * 1000);
 </script>
+      if (typeof renderPrayerCards === "function") {
+        renderPrayerCards();
+      }
+    } catch (err) {
+      console.error("Timings error:", err);
+    }
+  }
+
+  loadTimings();
+  setInterval(loadTimings, 5 * 60 * 1000);
+</script>
