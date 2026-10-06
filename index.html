@@ -602,7 +602,7 @@ function renderPrayerCards(){
     { key:'fajr',    label:'Fajr',    icon:'fa-cloud-sun',     min: timeStrToMins(settings.fajr) },
     { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',           min: timeStrToMins(settings.zuhr) },
     { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt',min: timeStrToMins(settings.asr) },
-    { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',  min: todayVals.maghrib + (parseInt(settings.maghribOffset)||0), note:'Sunset-based' },
+   { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun', min: settings.maghribFixed ? timeStrToMins(settings.maghribFixed) : todayVals.maghrib + (parseInt(settings.maghribOffset)||0), note:'Sunset-based' },
     { key:'isha',    label:'Isha',    icon:'fa-moon',          min: timeStrToMins(settings.isha) },
   ];
   const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(settings.jumma), note:'Fridays only' };
@@ -785,23 +785,28 @@ renderMonth(todayMonthIdx);
 // Google Sheet Integration
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxWOGYhclFK7GszDoWFWVzExgdVs6HDaCubOuCJ2-PW1ub1sM-2b3WDXGBVQnFdhArx6g/exec';
 
-fetch(SHEET_URL)
-  .then(res => res.json())
-  .then(data => {
-    const times = data[1]; 
-    const rows = document.querySelectorAll('#scheduleBody tr');
-    if(rows.length > 0) {
-      const cells = rows[0].querySelectorAll('td');
-      if(cells.length >= 6) {
-        cells[1].innerText = times[0]; // Fajr
-        cells[2].innerText = times[1]; // Dhuhr
-        cells[3].innerText = times[2]; // Asr
-        cells[4].innerText = times[3]; // Maghrib
-        cells[5].innerText = times[4]; // Isha
-      }
-    }
-  })
-  .catch(err => console.error("Error:", err));
-</script>
-</body>
-</html>
+function to24h(str){
+  const m = String(str||'').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if(!m) return null;
+  let h = parseInt(m[1]), min = m[2], ap = (m[3]||'').toUpperCase();
+  if(ap === 'PM' && h < 12) h += 12;
+  if(ap === 'AM' && h === 12) h = 0;
+  return String(h).padStart(2,'0') + ':' + min;
+}
+
+async function loadTimings(){
+  try{
+    const res = await fetch(SHEET_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    const d = await res.json();
+    const f = to24h(d.fajr), z = to24h(d.zuhr), a = to24h(d.asr),
+          mg = to24h(d.maghrib), i = to24h(d.isha);
+    if(f) settings.fajr = f;
+    if(z) settings.zuhr = z;
+    if(a) settings.asr  = a;
+    if(i) settings.isha = i;
+    settings.maghribFixed = mg || null;
+    renderPrayerCards();
+  }catch(err){ console.error('Timings error:', err); }
+}
+loadTimings();
+setInterval(loadTimings, 5 * 60 * 1000);
