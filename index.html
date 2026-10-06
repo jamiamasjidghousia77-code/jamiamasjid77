@@ -815,32 +815,44 @@ async function loadTimings(){
     if (typeof renderPrayerCards === 'function') {
       renderPrayerCards();
     }
-  }catch(err){ console.error('Timings error:', err); }
-}
 <script>
-async function loadTimings(){
-  try{
-    const res = await fetch(SHEET_URL);
-    const d = await res.json();
-    console.log("Sheet Data Received:", d);
+  const SHEET_URL = "AAPKA_GOOGLE_SCRIPT_URL_HERE";
 
-    // Time parsing and setting updates
-    const f = to24h(d.fajr), z = to24h(d.zuhr), a = to24h(d.asr),
-          mg = to24h(d.maghrib), i = to24h(d.isha);
-          
-    if(f) settings.fajr = f;
-    if(z) settings.zuhr = z;
-    if(a) settings.asr = a;
-    if(i) settings.isha = i;
-    if(mg) settings.maghribFixed = mg;
+  function to24h(str) {
+    if (!str) return "";
+    let [time, modifier] = str.split(" ");
+    let [hours, minutes] = time.split(":");
+    if (hours === "12") hours = "00";
+    if (modifier === "PM") hours = parseInt(hours, 10) + 12;
+    return `${hours}:${minutes}`;
+  }
 
-    // Direct Cards Re-render
-    if (typeof renderPrayerCards === 'function') {
-      renderPrayerCards();
+  async function loadTimings() {
+    try {
+      const res = await fetch(SHEET_URL);
+      const d = await res.json();
+      console.log("Sheet Data Received:", d);
+
+      const f = to24h(d.fajr),
+        z = to24h(d.zuhr),
+        a = to24h(d.asr),
+        mg = to24h(d.maghrib),
+        i = to24h(d.isha);
+
+      if (f) settings.fajr = f;
+      if (z) settings.zuhr = z;
+      if (a) settings.asr = a;
+      if (i) settings.isha = i;
+      if (mg) settings.maghribFixed = mg;
+
+      if (typeof renderPrayerCards === "function") {
+        renderPrayerCards();
+      }
+    } catch (err) {
+      console.error("Timings error:", err);
     }
-  }catch(err){ console.error('Timings error:', err); }
-}
+  }
 
-loadTimings();
-setInterval(loadTimings, 5 * 60 * 1000);
+  loadTimings();
+  setInterval(loadTimings, 5 * 60 * 1000);
 </script>
