@@ -781,6 +781,27 @@ function renderMonth(idx){
 }
 
 renderMonth(todayMonthIdx);
+
+// Google Sheet Integration
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxWOGYhclFK7GszDoWFWVzExgdVs6HDaCubOuCJ2-PW1ub1sM-2b3WDXGBVQnFdhArx6g/exec';
+
+fetch(SHEET_URL)
+  .then(res => res.json())
+  .then(data => {
+    const times = data[1]; 
+    const rows = document.querySelectorAll('#scheduleBody tr');
+    if(rows.length > 0) {
+      const cells = rows[0].querySelectorAll('td');
+      if(cells.length >= 6) {
+        cells[1].innerText = times[0]; // Fajr
+        cells[2].innerText = times[1]; // Dhuhr
+        cells[3].innerText = times[2]; // Asr
+        cells[4].innerText = times[3]; // Maghrib
+        cells[5].innerText = times[4]; // Isha
+      }
+    }
+  })
+  .catch(err => console.error("Error:", err));
 </script>
 </body>
 </html>
