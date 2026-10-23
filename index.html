@@ -238,7 +238,7 @@
 
     <div class="glass rounded-2xl mt-6 px-5 py-4 text-sm text-[var(--masjid-deep)] flex items-start gap-3">
       <i class="fa-solid fa-circle-info mt-0.5" style="color:var(--masjid-gold);"></i>
-      <p>Fajr, Zuhr, Asr and Isha follow the masjid's standing Jamaat schedule. <strong>Maghrib is offered at sunset</strong> — as winter approaches, Maghrib time shifts about 2–3 minutes earlier each day, exactly as on a traditional perpetual calendar. This daily change is shown in the <a href="#schedule" class="underline font-medium" style="color:var(--masjid-green);">12‑month schedule</a> below.</p>
+      <p>Fajr, Zuhr, Asr and Isha follow the masjid's standing Jamaat schedule. <strong>Maghrib Azan is at sunset and Jamaat is 4 minutes after Azan</strong> — the time changes daily with sunset, exactly as on the perpetual calendar. This daily change is shown in the <a href="#schedule" class="underline font-medium" style="color:var(--masjid-green);">12‑month schedule</a> below.</p>
     </div>
   </div>
 </section>
@@ -260,14 +260,15 @@
 
   <div class="glass rounded-2xl p-3 sm:p-5">
     <div class="table-scroll overflow-x-auto">
-      <table id="scheduleTable" class="w-full min-w-[640px] text-sm text-left border-collapse">
+      <table id="scheduleTable" class="w-full min-w-[720px] text-sm text-left border-collapse">
         <thead>
           <tr class="text-white" style="background:var(--masjid-green);">
             <th class="px-4 py-3 rounded-tl-lg font-medium">Date</th>
             <th class="px-4 py-3 font-medium"><i class="fa-solid fa-cloud-sun mr-1"></i>Fajr</th>
             <th class="px-4 py-3 font-medium"><i class="fa-solid fa-sun mr-1"></i>Zuhr</th>
             <th class="px-4 py-3 font-medium"><i class="fa-solid fa-sun-plant-wilt mr-1"></i>Asr</th>
-            <th class="px-4 py-3 font-medium"><i class="fa-solid fa-mountain-sun mr-1"></i>Maghrib</th>
+            <th class="px-4 py-3 font-medium"><i class="fa-solid fa-mountain-sun mr-1"></i>Maghrib Azan</th>
+            <th class="px-4 py-3 font-medium"><i class="fa-solid fa-mosque mr-1"></i>Maghrib Jamaat</th>
             <th class="px-4 py-3 rounded-tr-lg font-medium"><i class="fa-solid fa-moon mr-1"></i>Isha</th>
           </tr>
         </thead>
@@ -483,10 +484,10 @@
         <input id="setAsr" type="time" class="w-full rounded-xl border px-3 py-2 text-sm" style="border-color:var(--masjid-green);">
       </div>
       <div>
-        <label class="block text-xs font-semibold text-[var(--masjid-deep)] mb-1">Maghrib Adjustment (minutes from calculated sunset)</label>
+        <label class="block text-xs font-semibold text-[var(--masjid-deep)] mb-1">Maghrib extra adjustment (minutes, on top of Azan + 4)</label>
         <input id="setMaghribOffset" type="number" step="1" placeholder="0"
                class="w-full rounded-xl border px-3 py-2 text-sm" style="border-color:var(--masjid-green);">
-        <p class="text-[11px] text-[var(--masjid-ink)]/50 mt-1">Maghrib is auto-calculated daily from sunset; use this only if the Jamaat is offered a few minutes after Adhan.</p>
+        <p class="text-[11px] text-[var(--masjid-ink)]/50 mt-1">Maghrib Jamaat is automatically calendar Azan + 4 min. Leave 0 unless you need a further change.</p>
       </div>
       <div>
         <label class="block text-xs font-semibold text-[var(--masjid-deep)] mb-1">Isha Jamaat</label>
@@ -542,6 +543,8 @@ const MONTHS = [
   { name:"December",  days:31, fajr:[320,338], zuhr:[717,731], asr:[927,936],  maghrib:[1029,1039], isha:[1110,1121] },
 ];
 
+const CALENDAR_SHIFT = -1; // minutes added to every calendar time (-1 = 1 minute earlier)
+const MAGHRIB_JAMAAT_GAP = 4; // Maghrib Jamaat = calendar Azan time + 4 minutes
 function lerp(a,b,t){ return Math.round(a + (b-a)*t); }
 function fmt(mins){
   mins = ((mins % 1440) + 1440) % 1440;
@@ -558,7 +561,9 @@ function dayTimes(monthIdx, dayNum){
   const asr     = lerp(mo.asr[0],     mo.asr[1],     t);
   const maghrib = lerp(mo.maghrib[0], mo.maghrib[1], t);
   const isha    = lerp(mo.isha[0],    mo.isha[1],    t);
-  return { fajr, zuhr, asr, maghrib, isha };
+  // Whole calendar shifted 1 minute earlier (set CALENDAR_SHIFT = 0 to undo)
+  return { fajr: fajr + CALENDAR_SHIFT, zuhr: zuhr + CALENDAR_SHIFT, asr: asr + CALENDAR_SHIFT,
+           maghrib: maghrib + CALENDAR_SHIFT, isha: isha + CALENDAR_SHIFT };
 }
 
 /* ---------- Today's live cards ----------
@@ -626,8 +631,8 @@ function renderPrayerCards(){
     { key:'zuhr',    label:'Zuhr',    icon:'fa-sun',            min: timeStrToMins(eff.zuhr) },
     { key:'asr',     label:'Asr',     icon:'fa-sun-plant-wilt', min: timeStrToMins(eff.asr) },
     { key:'maghrib', label:'Maghrib', icon:'fa-mountain-sun',
-      min: eff.maghribFixed ? timeStrToMins(eff.maghribFixed) : todayVals.maghrib + (parseInt(eff.maghribOffset) || 0),
-      note: eff.maghribFixed ? 'Set by committee' : 'Sunset-based' },
+      min: eff.maghribFixed ? timeStrToMins(eff.maghribFixed) : todayVals.maghrib + MAGHRIB_JAMAAT_GAP + (parseInt(eff.maghribOffset) || 0),
+      note: eff.maghribFixed ? 'Set by committee' : 'Azan ' + fmt(todayVals.maghrib) + ' (sunset) · Jamaat +' + MAGHRIB_JAMAAT_GAP + ' min' },
     { key:'isha',    label:'Isha',    icon:'fa-moon',           min: timeStrToMins(eff.isha) },
   ];
   const jumma = { key:'jumma', label:'Jumma', icon:'fa-book-quran', min: timeStrToMins(eff.jumma), note:'Fridays only' };
@@ -797,6 +802,7 @@ function renderMonth(idx){
       <td class="px-4 py-2.5">${fmt(t.zuhr)}</td>
       <td class="px-4 py-2.5">${fmt(t.asr)}</td>
       <td class="px-4 py-2.5 font-semibold" style="color:var(--masjid-green);">${fmt(t.maghrib)}</td>
+      <td class="px-4 py-2.5 font-semibold" style="color:var(--masjid-deep);">${fmt(t.maghrib + MAGHRIB_JAMAAT_GAP)}</td>
       <td class="px-4 py-2.5">${fmt(t.isha)}</td>
     `;
     scheduleBody.appendChild(row);
