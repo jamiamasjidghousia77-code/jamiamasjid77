@@ -151,6 +151,7 @@
       <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-[var(--masjid-deep)]">
         <a href="#home" class="hover:text-[var(--masjid-gold)] transition-colors">Home</a>
         <a href="#awqat" class="hover:text-[var(--masjid-gold)] transition-colors">Today's Timings</a>
+        <a href="#imam" class="hover:text-[var(--masjid-gold)] transition-colors">Imam &amp; Muazzin</a>
         <a href="#schedule" class="hover:text-[var(--masjid-gold)] transition-colors">Yearly Schedule</a>
         <a href="#reminders" class="hover:text-[var(--masjid-gold)] transition-colors">Reminders</a>
         <a href="#azkar" class="hover:text-[var(--masjid-gold)] transition-colors">Azkar</a>
@@ -171,6 +172,7 @@
     <div id="mobileMenu" class="hidden md:hidden px-5 pb-4 flex flex-col gap-3 text-sm font-medium text-[var(--masjid-deep)]">
       <a href="#home">Home</a>
       <a href="#awqat">Today's Timings</a>
+      <a href="#imam">Imam &amp; Muazzin</a>
       <a href="#schedule">Yearly Schedule</a>
       <a href="#reminders">Reminders</a>
       <a href="#azkar">Azkar</a>
@@ -239,6 +241,40 @@
     <div class="glass rounded-2xl mt-6 px-5 py-4 text-sm text-[var(--masjid-deep)] flex items-start gap-3">
       <i class="fa-solid fa-circle-info mt-0.5" style="color:var(--masjid-gold);"></i>
       <p>Fajr, Zuhr, Asr and Isha follow the masjid's standing Jamaat schedule. <strong>Maghrib Azan is at sunset and Jamaat is 4 minutes after Azan</strong> — the time changes daily with sunset, exactly as on the perpetual calendar. This daily change is shown in the <a href="#schedule" class="underline font-medium" style="color:var(--masjid-green);">12‑month schedule</a> below.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMAM & MUAZZIN ============ -->
+<section id="imam" class="max-w-5xl mx-auto px-5 pt-16">
+  <div class="text-center mb-8">
+    <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold);">Masjid Leadership</p>
+    <h2 class="font-display text-2xl sm:text-3xl text-[var(--masjid-deep)] mt-2">Imam &amp; Muazzin</h2>
+    <span class="block mx-auto mt-4 h-px w-24" style="background:linear-gradient(90deg,transparent,var(--masjid-gold),transparent);"></span>
+  </div>
+
+  <div class="relative rounded-3xl p-[1.5px] shadow-xl" style="background:linear-gradient(135deg,var(--masjid-gold-2),var(--masjid-gold) 40%,rgba(200,162,74,0.35));">
+    <div class="relative rounded-[22px] overflow-hidden text-white" style="background:linear-gradient(160deg,var(--masjid-deep),#08301d 70%);">
+      <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(circle,#fff 1.4px,transparent 0);background-size:24px 24px;"></div>
+      <div class="relative grid sm:grid-cols-2">
+
+        <div class="px-6 py-10 sm:py-14 text-center">
+          <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Imam</p>
+          <p class="font-urdu text-lg mt-1 text-white/60">امام</p>
+          <h3 class="font-urdu text-3xl sm:text-[2.6rem] leading-[1.5] mt-3" style="background:linear-gradient(180deg,#fff,var(--masjid-gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;">سید اسماعیل شاہ بخاری</h3>
+          <span class="block mx-auto my-4 h-px w-14" style="background:var(--masjid-gold);"></span>
+          <p class="text-sm sm:text-base tracking-[0.18em] uppercase font-light text-white/90">Syed Ismail Shah Bukhari</p>
+        </div>
+
+        <div class="px-6 py-10 sm:py-14 text-center border-t sm:border-t-0 sm:border-l" style="border-color:rgba(228,200,122,0.35);">
+          <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Muazzin</p>
+          <p class="font-urdu text-lg mt-1 text-white/60">مؤذن</p>
+          <h3 class="font-urdu text-3xl sm:text-[2.6rem] leading-[1.5] mt-3" style="background:linear-gradient(180deg,#fff,var(--masjid-gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;">علی حسن</h3>
+          <span class="block mx-auto my-4 h-px w-14" style="background:var(--masjid-gold);"></span>
+          <p class="text-sm sm:text-base tracking-[0.18em] uppercase font-light text-white/90">Ali Hassan</p>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
