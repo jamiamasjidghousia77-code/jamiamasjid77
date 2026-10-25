@@ -20,7 +20,9 @@
 <title>Jamia Masjid Ghousia School Wali | Chak 77 RB, Khurrianwala</title>
 <meta name="description" content="Jamia Masjid Ghousia School Wali - Located in front of Dera Ch. Mola Baksh Gujjar, next to Govt. Boys High School, Chak No. 77 RB, Khurrianwala, Faisalabad.">
 <meta name="keywords" content="Jamia Masjid Ghousia School Wali, Chak 77 RB Khurrianwala, Faisalabad">
-  <link rel="icon" id="favicon" type="image/png" href="">
+  <link rel="icon" id="favicon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<meta name="theme-color" content="#0B4429">
 <!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Font Awesome -->
@@ -41,7 +43,7 @@
     --masjid-ink:    #123524;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; scroll-padding-top:84px;}
   body{
     font-family:'Inter',sans-serif;
     background:var(--masjid-cream);
@@ -107,6 +109,13 @@
   #scheduleTable tbody tr:hover{
     background-color: rgba(14,107,59,0.06);
   }
+  #scheduleTable th, #scheduleTable td{ white-space:nowrap; }
+  #scheduleTable th:first-child,
+  #scheduleTable td:first-child{ position:sticky; left:0; z-index:1; }
+  #scheduleTable thead th:first-child{ background: var(--masjid-green); }
+  #scheduleTable tbody td:first-child{ background: #FCFBF8; }
+  #scheduleTable tbody tr:hover td:first-child{ background: #EEF5F0; }
+  #scheduleTable tbody tr.today-row td:first-child{ background: #F4EBD3; }
   #scheduleTable tbody tr.today-row{
     background-color: rgba(200,162,74,0.16) !important;
     font-weight:600;
@@ -143,13 +152,13 @@
   <div class="glass shadow-sm">
     <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="w-11 h-11 rounded-full object-cover shadow-sm" style="border:2px solid var(--masjid-gold);">
+        <img src="logo.png" data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="w-11 h-11 rounded-full object-cover shadow-sm" style="border:2px solid var(--masjid-gold);">
         <div class="leading-tight">
           <p class="font-display text-[15px] sm:text-lg text-[var(--masjid-deep)]">Jamia Masjid Ghousia School Wali</p>
-          <p class="text-[11px] sm:text-xs text-[var(--masjid-green)]"><i class="fa-solid fa-location-dot mr-1"></i>Chak No. 77 RB, Faisalabad</p>
+          <p class="text-xs text-[var(--masjid-green)]"><i class="fa-solid fa-location-dot mr-1"></i>Chak No. 77 RB, Faisalabad</p>
         </div>
       </div>
-      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-[var(--masjid-deep)]">
+      <nav class="hidden xl:flex items-center gap-6 text-sm font-medium text-[var(--masjid-deep)]">
         <a href="#home" class="hover:text-[var(--masjid-gold)] transition-colors">Home</a>
         <a href="#awqat" class="hover:text-[var(--masjid-gold)] transition-colors">Today's Timings</a>
         <a href="#imam" class="hover:text-[var(--masjid-gold)] transition-colors">Imam &amp; Muazzin</a>
@@ -158,13 +167,13 @@
         <a href="#azkar" class="hover:text-[var(--masjid-gold)] transition-colors">Azkar</a>
         <a href="#contact" class="hover:text-[var(--masjid-gold)] transition-colors">Contact</a>
       </nav>
-      <div class="flex items-center gap-2 md:hidden">
-        <button id="menuBtn" aria-label="Open menu" class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:var(--masjid-green);">
+      <div class="flex items-center gap-2 xl:hidden">
+        <button id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" class="w-11 h-11 rounded-lg flex items-center justify-center" style="background:var(--masjid-green);">
           <i class="fa-solid fa-bars text-white"></i>
         </button>
       </div>
     </div>
-    <div id="mobileMenu" class="hidden md:hidden px-5 pb-4 flex flex-col gap-3 text-sm font-medium text-[var(--masjid-deep)]">
+    <div id="mobileMenu" class="hidden xl:hidden px-5 pb-4 flex flex-col gap-3 text-sm font-medium text-[var(--masjid-deep)]">
       <a href="#home">Home</a>
       <a href="#awqat">Today's Timings</a>
       <a href="#imam">Imam &amp; Muazzin</a>
@@ -183,12 +192,12 @@
 
   <div class="relative max-w-4xl mx-auto px-6 pt-20 pb-28 text-center text-white">
     <div class="flex justify-center mb-5">
-      <img data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="crescent w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover" style="border:3px solid var(--masjid-gold-2);">
+      <img src="logo.png" data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="crescent w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover" style="border:3px solid var(--masjid-gold-2);">
     </div>
     <h1 class="font-display text-3xl sm:text-5xl leading-tight mb-3">Jamia Masjid Ghousia School Wali</h1>
     <p class="font-urdu text-xl sm:text-2xl" style="color:var(--masjid-gold-2);">نماز قائم کرو، اللہ سے جُڑے رہو</p>
     <p class="mt-1 text-sm sm:text-base text-white/80">"Establish prayer and remain connected to Allah."</p>
-    <p class="mt-5 inline-flex items-center gap-2 text-sm text-white/90 border border-white/25 rounded-full px-4 py-1.5">
+    <p class="mt-5 inline-flex items-start sm:items-center gap-2 text-sm text-white/90 border border-white/25 rounded-2xl px-4 py-2 max-w-full text-left">
       <i class="fa-solid fa-location-dot"></i> Chak No. 77 RB, in front of Dera Ch. Mola Baksh Gujjar (next to Govt. Boys High School), Khurrianwala, Faisalabad
     </p>
     <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -226,10 +235,10 @@
     <div class="text-center mb-8">
       <h2 class="font-display text-2xl sm:text-3xl text-[var(--masjid-deep)]">Today's Jamaat Timings</h2>
       <p class="text-sm text-[var(--masjid-green)] mt-1" data-nosnippet id="todayDateLabel"></p>
-      <p class="text-[11px] text-[var(--masjid-ink)]/70 mt-1" id="sheetStatus" aria-live="polite"></p>
+      <p class="text-xs text-[var(--masjid-ink)]/70 mt-1" id="sheetStatus" aria-live="polite"></p>
     </div>
 
-    <div id="prayerCards" data-nosnippet class="flex flex-col gap-3 max-w-md mx-auto">
+    <div id="prayerCards" data-nosnippet class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md md:max-w-3xl mx-auto">
       <!-- filled by JS -->
     </div>
 
@@ -243,7 +252,7 @@
 <!-- ============ IMAM & MUAZZIN ============ -->
 <section id="imam" class="max-w-5xl mx-auto px-5 pt-16">
   <div class="text-center mb-8">
-    <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold);">Masjid Leadership</p>
+    <p class="text-xs tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold);">Masjid Leadership</p>
     <h2 class="font-display text-2xl sm:text-3xl text-[var(--masjid-deep)] mt-2">Imam &amp; Muazzin</h2>
     <span class="block mx-auto mt-4 h-px w-24" style="background:linear-gradient(90deg,transparent,var(--masjid-gold),transparent);"></span>
   </div>
@@ -254,7 +263,7 @@
       <div class="relative grid sm:grid-cols-2">
 
         <div class="px-6 py-10 sm:py-14 text-center">
-          <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Imam</p>
+          <p class="text-xs tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Imam</p>
           <p class="font-urdu text-lg mt-1 text-white/60">امام</p>
           <h3 class="font-urdu text-3xl sm:text-[2.6rem] leading-[1.5] mt-3" style="background:linear-gradient(180deg,#fff,var(--masjid-gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;">سید اسماعیل شاہ بخاری</h3>
           <span class="block mx-auto my-4 h-px w-14" style="background:var(--masjid-gold);"></span>
@@ -262,7 +271,7 @@
         </div>
 
         <div class="px-6 py-10 sm:py-14 text-center border-t sm:border-t-0 sm:border-l" style="border-color:rgba(228,200,122,0.35);">
-          <p class="text-[11px] tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Muazzin</p>
+          <p class="text-xs tracking-[0.35em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Muazzin</p>
           <p class="font-urdu text-lg mt-1 text-white/60">مؤذن</p>
           <h3 class="font-urdu text-3xl sm:text-[2.6rem] leading-[1.5] mt-3" style="background:linear-gradient(180deg,#fff,var(--masjid-gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;">علی حسن</h3>
           <span class="block mx-auto my-4 h-px w-14" style="background:var(--masjid-gold);"></span>
@@ -291,7 +300,7 @@
 
   <div class="glass rounded-2xl p-3 sm:p-5">
     <div class="table-scroll overflow-x-auto">
-      <table id="scheduleTable" class="w-full min-w-[720px] text-sm text-left border-collapse">
+      <table id="scheduleTable" class="w-full min-w-[640px] text-sm text-left border-collapse">
         <thead>
           <tr class="text-white" style="background:var(--masjid-green);">
             <th class="px-4 py-3 rounded-tl-lg font-medium">Date</th>
@@ -343,7 +352,7 @@
       <p class="text-xs font-semibold mt-2 text-right" style="color:var(--masjid-gold);" dir="rtl">(سورۃ الانعام: 159)</p>
       <p dir="rtl" class="font-urdu text-base leading-loose text-[var(--masjid-ink)]/80 mt-3 text-right">ترجمہ: بے شک جن لوگوں نے اپنے دین کو ٹکڑے ٹکڑے کر دیا اور الگ الگ گروہ (فرقے) بن گئے، آپ کا ان سے کوئی تعلق نہیں۔</p>
       <div class="mt-4 pt-4 border-t" style="border-color:rgba(200,162,74,0.3);">
-        <p dir="rtl" class="font-urdu text-base leading-loose text-[var(--masjid-ink)]/80 text-right">عَنْ عَبْدِ اللَّهِ بْنِ عَمْرٍو، قَالَ: قال رَسُولُ اللَّهِ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ: «لَيَأْتِيَنَّ عَلَى أُمَّتِي مَا أَتَى عَلَى بَنِي إِسْرَائِيلَ حَذْوَ النَّعْلِ بِالنَّعْلِ... وَإِنَّ بَنِي إِسْرَائِيلَ تَفَرَّقُوا عَلَى ثِنْتَيْنِ وَسَبْعِينَ مِلَّةً، وَتَفْتَرِقُ أُمَّتِي عَلَى ثَلَاثٍ وَسَبْعِينَ مِلَّةً، كُلُّهُمْ فِي النَّارِ إِلَّا مِلَّةً وَاحِدَةً»، قَالُوا: وَمَنْ هِيَ يَا رَسُولَ اللَّهِ؟ قَالَ: «مَا أَنَا عَلَيْهِ وَأَصْحَابِي»</p>
+        <p dir="rtl" class="font-urdu text-base leading-loose text-[var(--masjid-ink)]/80 text-right">عَنْ عَبْدِ اللَّهِ بْنِ عَمْرٍو، قَالَ: قَالَ رَسُولُ اللَّهِ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ: «لَيَأْتِيَنَّ عَلَى أُمَّتِي مَا أَتَى عَلَى بَنِي إِسْرَائِيلَ حَذْوَ النَّعْلِ بِالنَّعْلِ... وَإِنَّ بَنِي إِسْرَائِيلَ تَفَرَّقَتْ عَلَى ثِنْتَيْنِ وَسَبْعِينَ مِلَّةً، وَتَفْتَرِقُ أُمَّتِي عَلَى ثَلَاثٍ وَسَبْعِينَ مِلَّةً، كُلُّهُمْ فِي النَّارِ إِلَّا مِلَّةً وَاحِدَةً»، قَالُوا: وَمَنْ هِيَ يَا رَسُولَ اللَّهِ؟ قَالَ: «مَا أَنَا عَلَيْهِ وَأَصْحَابِي»</p>
         <p class="text-xs font-semibold mt-2 text-right" style="color:var(--masjid-gold);" dir="rtl">(سنن الترمذي: 2641)</p>
         <p dir="rtl" class="font-urdu text-base leading-loose text-[var(--masjid-ink)]/80 mt-3 text-right">ترجمہ: حضرت عبداللہ بن عمرو رضی اللہ عنہما سے روایت ہے کہ رسول اللہ ﷺ نے فرمایا: "میری امت پر بھی وہی کچھ آئے گا جو بنی اسرائیل پر آیا تھا... اور بنی اسرائیل بہتر (72) فرقوں میں بٹ گئے تھے، اور میری امت تہتر (73) فرقوں میں بٹ جائے گی؛ سوائے ایک گروہ (جماعت) کے باقی سب آگ (جہنم) میں جائیں گے۔" صحابہ نے عرض کیا: اے اللہ کے رسول! وہ کون سا گروہ ہوگا؟ آپ ﷺ نے فرمایا: "جو اس راستے پر ہو جس پر آج میں اور میرے صحابہ ہیں۔"</p>
       </div>
@@ -355,7 +364,7 @@
 <!-- ============ MASNOON AZKAR ============ -->
 <section id="azkar" class="max-w-5xl mx-auto px-5 py-16">
   <div class="text-center mb-10">
-    <h2 dir="rtl" class="font-urdu font-display text-2xl sm:text-3xl text-[var(--masjid-deep)]">مسنون اذکار</h2>
+    <h2 dir="rtl" class="font-urdu text-3xl sm:text-4xl text-[var(--masjid-deep)]">مسنون اذکار</h2>
     <p class="text-sm text-[var(--masjid-ink)]/70 mt-2 max-w-2xl mx-auto">Daily Masnoon Azkar (supplications) for worshippers.</p>
   </div>
 
@@ -387,12 +396,12 @@
   <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(circle, #fff 1.4px, transparent 0); background-size:22px 22px;"></div>
   <div class="relative max-w-2xl mx-auto px-6 py-14 text-center">
     <div class="flex items-center justify-center gap-2 mb-3">
-      <img data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="w-8 h-8 rounded-full object-cover" style="border:1.5px solid var(--masjid-gold-2);">
+      <img src="logo.png" data-logo="1" alt="Jamia Masjid Ghousia School Wali Logo" class="w-8 h-8 rounded-full object-cover" style="border:1.5px solid var(--masjid-gold-2);">
       <span class="font-display text-lg">Jamia Masjid Ghousia School Wali</span>
     </div>
     <p class="text-sm text-white/75 leading-relaxed font-urdu">"اے ایمان والو! جب جمعہ کے دن نماز کے لیے اذان دی جائے تو اللہ کے ذکر کی طرف دوڑ پڑو" <span class="text-white/70">(سورۃ الجمعہ: 9)</span></p>
     <div class="mt-6 inline-flex flex-col items-center gap-1 text-sm">
-      <p class="text-[11px] tracking-[0.3em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Contact</p>
+      <p class="text-xs tracking-[0.3em] uppercase font-semibold" style="color:var(--masjid-gold-2);">Contact</p>
       <a href="mailto:jamiamasjidghousia77@gmail.com" class="inline-flex items-center gap-2 text-white/90 hover:text-white underline underline-offset-2"><i class="fa-solid fa-envelope"></i> jamiamasjidghousia77@gmail.com</a>
       <p class="text-xs text-white/70 mt-1">Chak No. 77 RB, in front of Dera Ch. Mola Baksh Gujjar, Khurrianwala, Faisalabad</p>
     </div>
@@ -400,13 +409,13 @@
   </div>
   <div class="relative border-t border-white/10 py-6 text-center">
     <p class="text-xs text-white/60">© <span id="year"></span> Jamia Masjid Ghousia School Wali, Chak No. 77 RB, Khurrianwala — All Rights Reserved. Jazak Allah Khair.</p>
-    <p class="text-[11px] text-white/60 mt-1 max-w-md mx-auto leading-relaxed">Unauthorized copying, scraping, or reproduction of this website's code, design, or content is strictly prohibited and will be reported under the DMCA.</p>
-    <button id="copyrightPolicyBtn" class="mt-2 text-[11px] font-semibold underline underline-offset-2" style="color:var(--masjid-gold-2);">Copyright Policy</button>
+    <p class="text-xs text-white/60 mt-1 max-w-md mx-auto leading-relaxed">Unauthorized copying, scraping, or reproduction of this website's code, design, or content is strictly prohibited and will be reported under the DMCA.</p>
+    <button id="copyrightPolicyBtn" class="mt-2 text-xs font-semibold underline underline-offset-2" style="color:var(--masjid-gold-2);">Copyright Policy</button>
   </div>
 </footer>
 
 <!-- ============ COPYRIGHT POLICY MODAL ============ -->
-<div id="copyrightModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4" style="background:rgba(11,68,41,0.55);">
+<div id="copyrightModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4" style="background:rgba(11,68,41,0.55);">
   <div class="rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl" style="background:var(--masjid-cream);">
     <div class="flex items-center justify-between px-6 py-4 border-b" style="border-color:rgba(200,162,74,0.3);">
       <div class="flex items-center gap-2">
@@ -483,21 +492,36 @@
 </div>
 
 <script>
-const LOGO_URI = "data:image/png;base64,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";
-document.querySelectorAll('img[data-logo]').forEach(i => { i.src = LOGO_URI; });
-document.getElementById('favicon').href = LOGO_URI;
+
 /* =====================================================================
    CONFIGURATION — the ONLY line you need to edit when the Google Apps
    Script web-app URL changes (Deploy > Manage deployments > Web app URL).
    ===================================================================== */
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxexZJJYMLQgxIRTiD1R_w7m2bvylAknN92bBi6cDwV0JDcHphqX-Tu0V2aMMrbUyzjDA/exec";
-const REFRESH_SECONDS = 60;   // how often the page re-checks the sheet
+const REFRESH_SECONDS = 300;   // how often the page re-checks the sheet
+
+/* ---------- Pakistan time (so the page is right even if opened from abroad) ---------- */
+const PK_TZ = 'Asia/Karachi';
+let _pkFmt = null;
+try{
+  _pkFmt = new Intl.DateTimeFormat('en-US', { timeZone: PK_TZ, year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric', hour12:false, weekday:'short' });
+}catch(e){ _pkFmt = null; }
+function pkNow(){
+  const d = new Date();
+  if(!_pkFmt) return { year:d.getFullYear(), month:d.getMonth(), date:d.getDate(), hour:d.getHours(), minute:d.getMinutes(), day:d.getDay() };
+  const o = {};
+  _pkFmt.formatToParts(d).forEach(p => { o[p.type] = p.value; });
+  const wd = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 }[o.weekday];
+  return { year:+o.year, month:+o.month - 1, date:+o.day, hour:(+o.hour) % 24, minute:+o.minute, day:wd };
+}
+function isLeapYear(y){ return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
 
 /* ---------- Mobile menu ---------- */
 document.getElementById('menuBtn').addEventListener('click', () => {
-  document.getElementById('mobileMenu').classList.toggle('hidden');
+  const open = document.getElementById('mobileMenu').classList.toggle('hidden') === false;
+  document.getElementById('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
 });
-document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('year').textContent = pkNow().year;
 
 /* ---------- Prayer time data model ----------
    Exact day-by-day "Daimi Awqat-e-Namaz" values transcribed from the masjid's
@@ -547,7 +571,7 @@ function timeStrToMins(str){
   return h*60 + m;
 }
 let sheetTimes = {};   // values coming from the Google Sheet
-let currentMonthIdx = new Date().getMonth();
+let currentMonthIdx = pkNow().month;
 const todayMonthIdx = currentMonthIdx;
 const dateLabelEl = document.getElementById('todayDateLabel');
 const cardsWrap = document.getElementById('prayerCards');
@@ -555,11 +579,11 @@ const cardsWrap = document.getElementById('prayerCards');
 function getEffective(){ return { ...DEFAULTS, ...sheetTimes }; }
 
 function renderPrayerCards(){
-  const now = new Date();
-  dateLabelEl.textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  const today = dayTimes(now.getMonth(), now.getDate());
+  const now = pkNow();
+  dateLabelEl.textContent = new Date().toLocaleDateString('en-GB', { timeZone: PK_TZ, weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const today = dayTimes(now.month, now.date);
   const eff = getEffective();
-  const isFriday = now.getDay() === 5;
+  const isFriday = now.day === 5;
   // sheet value is trusted; fallback default is never earlier than the prayer's start time
   const pick = (key, startMin) => sheetTimes[key] ? timeStrToMins(eff[key]) : Math.max(timeStrToMins(eff[key]), startMin);
   cardsWrap.innerHTML = '';
@@ -577,7 +601,7 @@ function renderPrayerCards(){
   const allCards = [...PRAYERS, jumma];
 
   // "Next" badge: on Friday Zuhr is skipped in favour of Jumma; other days Jumma is skipped
-  const nowMins = now.getHours()*60 + now.getMinutes();
+  const nowMins = now.hour*60 + now.minute;
   const candidates = allCards
     .filter(p => p.key === 'jumma' ? isFriday : !(isFriday && p.key === 'zuhr'))
     .sort((a,b) => a.min - b.min);
@@ -596,12 +620,12 @@ function renderPrayerCards(){
         </div>
         <div>
           <p class="text-xs uppercase tracking-wide text-[var(--masjid-green)] font-semibold">${p.label}</p>
-          ${p.note ? `<p class="text-[10px] text-[var(--masjid-ink)]/70">${p.note}</p>` : ''}
+          ${p.note ? `<p class="text-xs text-[var(--masjid-ink)]/70">${p.note}</p>` : ''}
         </div>
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <p class="text-lg font-bold text-[var(--masjid-deep)]">${fmt(p.min)}</p>
-        ${isNext ? `<span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:var(--masjid-gold);color:var(--masjid-deep);"><span class="w-1.5 h-1.5 rounded-full bg-[var(--masjid-deep)] pulse-dot"></span> Next</span>` : ''}
+        ${isNext ? `<span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" style="background:var(--masjid-gold);color:var(--masjid-deep);"><span class="w-1.5 h-1.5 rounded-full bg-[var(--masjid-deep)] pulse-dot"></span> Next</span>` : ''}
       </div>
     `;
     cardsWrap.appendChild(card);
@@ -613,6 +637,7 @@ renderPrayerCards();
 /* ---------- Mobile menu closes after choosing a link ---------- */
 document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
   document.getElementById('mobileMenu').classList.add('hidden');
+  document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
 }));
 
 /* ---------- Copyright Policy modal ---------- */
@@ -656,13 +681,14 @@ function renderMonth(idx){
 
   const mo = MONTHS[idx];
   scheduleBody.innerHTML = '';
-  const nowD = new Date();
-  const isCurrentMonth = idx === nowD.getMonth();
+  const nowD = pkNow();
+  const isCurrentMonth = idx === nowD.month;
+  const daysInMonth = (idx === 1 && isLeapYear(nowD.year)) ? 29 : mo.days;   // Feb 29 uses the 28 Feb chart times
 
-  for(let d = 1; d <= mo.days; d++){
+  for(let d = 1; d <= daysInMonth; d++){
     const t = dayTimes(idx, d);
     const row = document.createElement('tr');
-    row.className = 'border-b last:border-0 border-[var(--masjid-light)]' + (isCurrentMonth && d === nowD.getDate() ? ' today-row' : '');
+    row.className = 'border-b last:border-0 border-[var(--masjid-light)]' + (isCurrentMonth && d === nowD.date ? ' today-row' : '');
     row.innerHTML = `
       <td class="px-4 py-2.5 font-medium text-[var(--masjid-deep)]">${d} ${mo.name}</td>
       <td class="px-4 py-2.5">${fmt(t.fajr)}</td>
@@ -680,8 +706,8 @@ function renderMonth(idx){
 }
 
 renderMonth(todayMonthIdx);
-let lastDay = new Date().getDate();
-setInterval(() => { const d = new Date().getDate(); if(d !== lastDay){ lastDay = d; renderMonth(currentMonthIdx); } }, 60 * 1000);
+let lastDay = pkNow().date;
+setInterval(() => { const d = pkNow().date; if(d !== lastDay){ lastDay = d; renderMonth(currentMonthIdx); } }, 60 * 1000);
 
 /* =====================================================================
    GOOGLE SHEET INTEGRATION
@@ -697,7 +723,7 @@ function setSheetStatus(msg){
 
 /* Accepts "5:15 AM", "5:15:00 pm", "17:15", or a day-fraction number
    (Google Sheets stores times internally as 0–1). Returns "HH:MM" or null. */
-function normalizeTime(value){
+function normalizeTime(value, mode){
   if(value === null || value === undefined || value === '') return null;
 
   if(typeof value === 'number' && isFinite(value) && value >= 0 && value < 1){
@@ -711,6 +737,11 @@ function normalizeTime(value){
   const min = parseInt(m[2], 10);
   const ap = (m[3] || '').toUpperCase();
   if(min > 59) return null;
+  // No AM/PM typed in the sheet: fix obvious mistakes (e.g. Asr "4:40" means 4:40 PM)
+  if(!ap){
+    if(mode === 'pm' && h >= 1 && h < 12) h += 12;          // Asr, Isha are always afternoon/evening
+    else if(mode === 'noon' && h >= 1 && h <= 6) h += 12;    // Zuhr, Jumma: 1-6 means PM
+  }
   if(ap === 'P' && h < 12) h += 12;
   if(ap === 'A' && h === 12) h = 0;
   if(h > 23) return null;
@@ -726,17 +757,17 @@ function parseSheetPayload(payload){
   // case-insensitive keys, tolerant spellings
   const lower = {};
   Object.keys(src).forEach(k => { lower[String(k).trim().toLowerCase()] = src[k]; });
-  const pick = (...names) => {
-    for(const n of names){ if(lower[n] !== undefined && lower[n] !== '') return normalizeTime(lower[n]); }
+  const pick = (mode, ...names) => {
+    for(const n of names){ if(lower[n] !== undefined && lower[n] !== '') return normalizeTime(lower[n], mode); }
     return null;
   };
 
   const out = {};
-  const fajr = pick('fajr');
-  const zuhr = pick('zuhr','dhuhr','zohar','zuhar');
-  const asr  = pick('asr');
-  const isha = pick('isha');
-  const jum  = pick('jumma','jummah','jumah','jumuah','friday');
+  const fajr = pick(null, 'fajr');
+  const zuhr = pick('noon', 'zuhr','dhuhr','zohar','zuhar');
+  const asr  = pick('pm', 'asr');
+  const isha = pick('pm', 'isha');
+  const jum  = pick('noon', 'jumma','jummah','jumah','jumuah','friday');
   if(fajr) out.fajr = fajr;
   if(zuhr) out.zuhr = zuhr;
   if(asr)  out.asr  = asr;
@@ -765,15 +796,19 @@ function loadCachedSheetTimes(){
 }
 
 let sheetFetchInFlight = false;
+let lastFetchAt = 0;
+const MIN_FETCH_GAP_MS = 30 * 1000;   // focus/online/visibility events can't spam the Apps Script
 
 async function loadTimings(){
   if(sheetFetchInFlight) return;
+  if(Date.now() - lastFetchAt < MIN_FETCH_GAP_MS) return;
   if(!SPREADSHEET_URL || SPREADSHEET_URL.indexOf('http') !== 0){
     console.warn('SPREADSHEET_URL is not set. Showing default timings.');
     return;
   }
 
   sheetFetchInFlight = true;
+  lastFetchAt = Date.now();
   const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
   const timer = controller ? setTimeout(() => controller.abort(), 15000) : null;
 
@@ -794,7 +829,7 @@ async function loadTimings(){
     const times = parseSheetPayload(payload);
     if(!Object.keys(times).length) throw new Error('No valid prayer times found in the sheet response.');
 
-    applySheetTimes(times, 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }));
+    applySheetTimes(times, 'Timings synced from sheet at ' + new Date().toLocaleTimeString('en-GB', { timeZone: PK_TZ, hour:'2-digit', minute:'2-digit' }));
     try{ localStorage.setItem(SHEET_CACHE_KEY, JSON.stringify({ times, savedAt: Date.now() })); }catch(e){ /* storage may be blocked */ }
   }catch(err){
     const reason = (err && err.name === 'AbortError') ? 'Request timed out' : (err && err.message) || err;
