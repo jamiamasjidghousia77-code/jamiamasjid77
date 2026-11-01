@@ -217,6 +217,50 @@ img,video{max-width:100%;height:auto}
   .pc-time{ font-size:1.125rem; line-height:1.75rem; font-weight:700; color:var(--masjid-deep); white-space:nowrap; }
   .pc-next{ display:inline-flex; align-items:center; gap:.3rem; font-size:.75rem; font-weight:600;
             padding:.125rem .55rem; border-radius:9999px; background:var(--masjid-gold); color:var(--masjid-deep); }
+
+  /* ---- Prayer cards: elegant ivory + gold + deep green ---- */
+  .prayer-card.glass{
+    position:relative;
+    background:linear-gradient(180deg,#FFFFFF 0%,#FBF7EC 100%);
+    backdrop-filter:none; -webkit-backdrop-filter:none;
+    border:1px solid rgba(200,162,74,.55);
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 10px 24px -14px rgba(11,68,41,.35);
+  }
+  .prayer-card.glass::before{ /* fine inner gold hairline */
+    content:""; position:absolute; inset:4px; border-radius:.75rem;
+    border:1px solid rgba(200,162,74,.22); pointer-events:none;
+  }
+  .prayer-card .pc-icon{
+    color:var(--masjid-green); --ic-accent:var(--masjid-gold);
+    background:linear-gradient(145deg,#ffffff 0%,var(--masjid-light) 100%);
+    border:1px solid rgba(200,162,74,.6);
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.8), 0 6px 12px -6px rgba(11,68,41,.35);
+  }
+  .prayer-card .pc-label{
+    font-family:'Reem Kufi',system-ui,sans-serif; font-size:.95rem; letter-spacing:.12em;
+    color:var(--masjid-deep); font-weight:400;
+  }
+  .prayer-card .pc-note{ color:var(--masjid-gold-text); }
+  .prayer-card .pc-time{
+    font-family:'Reem Kufi',system-ui,sans-serif; font-weight:400; font-size:1.3rem;
+    color:var(--masjid-deep); letter-spacing:.02em;
+  }
+
+  /* Next prayer: deep emerald with gold details */
+  .prayer-card.glass.is-next{
+    background:linear-gradient(160deg,#08301d 0%,var(--masjid-deep) 45%,var(--masjid-green) 100%);
+    border:1px solid var(--masjid-gold);
+    box-shadow:0 0 0 2px rgba(200,162,74,.35), 0 18px 34px -14px rgba(11,68,41,.55);
+  }
+  .prayer-card.glass.is-next::before{ border-color:rgba(228,200,122,.4); }
+  .prayer-card.is-next .pc-label{ color:var(--masjid-gold-2); }
+  .prayer-card.is-next .pc-note{ color:rgba(255,255,255,.82); }
+  .prayer-card.is-next .pc-time{ color:#fff; }
+  .prayer-card.is-next .pc-icon{
+    color:var(--masjid-deep); --ic-accent:var(--masjid-deep);
+    background:linear-gradient(145deg,var(--masjid-gold-2) 0%,var(--masjid-gold) 100%);
+    border-color:rgba(255,255,255,.75);
+  }
   @media (max-width:420px){
     .pc{ gap:.7rem; padding:.8rem .9rem; }
     .pc-right{ flex-direction:column; align-items:flex-end; gap:.2rem; }
@@ -889,6 +933,7 @@ function renderPrayerCards(){
     const isNext = p.key === nextKey;
     const card = document.createElement('div');
     card.className = 'prayer-card glass pc' + (isNext ? ' is-next' : '');
+    card.dataset.prayer = p.key;
     card.innerHTML = `
       <div class="pc-icon"><svg class="icon" aria-hidden="true"><use href="#${p.icon}"/></svg></div>
       <div class="pc-text">
