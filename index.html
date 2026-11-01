@@ -184,6 +184,44 @@ img,video{max-width:100%;height:auto}
     *{ animation: none !important; transition: none !important; }
   }
 
+  /* Prayer cards: ONE vertical stack (one card under another) on every device.
+     No sideways scrolling, no side-by-side columns. */
+  #prayerCards{
+    display:flex; flex-direction:column; gap:.75rem;
+    max-width:32rem; margin:0 auto; padding:.5rem .25rem;
+  }
+  .pc{
+    display:flex; align-items:center; gap:.9rem;
+    padding:.85rem 1.1rem; border-radius:1rem; text-align:left;
+  }
+  .pc-icon{
+    width:3rem; height:3rem; border-radius:9999px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--masjid-green); --ic-accent:var(--masjid-gold);
+    background:linear-gradient(145deg,#ffffff 0%,var(--masjid-light) 100%);
+    border:1px solid rgba(200,162,74,.45);
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.75), 0 6px 12px -6px rgba(11,68,41,.35);
+  }
+  .pc-icon .icon{ width:1.75rem; height:1.75rem; stroke-width:1.5; }
+  .is-next .pc-icon{
+    color:var(--masjid-deep); --ic-accent:var(--masjid-deep);
+    background:linear-gradient(145deg,var(--masjid-gold-2) 0%,var(--masjid-gold) 100%);
+    border-color:rgba(255,255,255,.7);
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.35), 0 8px 14px -6px rgba(168,126,34,.55);
+  }
+  #scheduleTable th .icon{ --ic-accent:var(--masjid-gold-2); stroke-width:1.6; width:1.15em; height:1.15em; }
+  .pc-text{ flex:1 1 auto; min-width:0; }
+  .pc-label{ font-size:.75rem; line-height:1rem; letter-spacing:.025em; text-transform:uppercase; font-weight:600; color:var(--masjid-green); }
+  .pc-note{ font-size:.75rem; line-height:1rem; color:rgb(18 53 36 / .75); margin-top:.1rem; }
+  .pc-right{ display:flex; align-items:center; gap:.5rem; flex-shrink:0; }
+  .pc-time{ font-size:1.125rem; line-height:1.75rem; font-weight:700; color:var(--masjid-deep); white-space:nowrap; }
+  .pc-next{ display:inline-flex; align-items:center; gap:.3rem; font-size:.75rem; font-weight:600;
+            padding:.125rem .55rem; border-radius:9999px; background:var(--masjid-gold); color:var(--masjid-deep); }
+  @media (max-width:420px){
+    .pc{ gap:.7rem; padding:.8rem .9rem; }
+    .pc-right{ flex-direction:column; align-items:flex-end; gap:.2rem; }
+  }
+
   /* Inline SVG icons (replaces the 1 MB+ Font Awesome JS) */
   .icon{display:inline-block;width:1em;height:1em;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
@@ -379,7 +417,7 @@ img,video{max-width:100%;height:auto}
 </style>
 </head>
 <body class="lattice-bg">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol><symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-cloud-sun" viewBox="0 0 24 24"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4M15.9 12.7a4 4 0 0 0-5.9-4.2"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol><symbol id="i-sunset" viewBox="0 0 24 24"><path d="M12 10V2M4.9 10.9l1.4 1.4M2 18h2M20 18h2M19.1 10.9l-1.4 1.4M22 22H2M16 18a4 4 0 0 0-8 0M16 6l-4 4-4-4"/></symbol><symbol id="i-mountain" viewBox="0 0 24 24"><path d="m3 20 6-11 4 6 3-4 5 9z"/><circle cx="17" cy="6" r="2"/></symbol><symbol id="i-mosque" viewBox="0 0 24 24"><path d="M3 21h18M6 21v-6a6 6 0 0 1 12 0v6M12 9V4M10 21v-3a2 2 0 0 1 4 0v3"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M12 3v18"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol><symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-cloud-sun" viewBox="0 0 24 24"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4M15.9 12.7a4 4 0 0 0-5.9-4.2"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol><symbol id="i-sunset" viewBox="0 0 24 24"><path d="M12 10V2M4.9 10.9l1.4 1.4M2 18h2M20 18h2M19.1 10.9l-1.4 1.4M22 22H2M16 18a4 4 0 0 0-8 0M16 6l-4 4-4-4"/></symbol><symbol id="i-mountain" viewBox="0 0 24 24"><path d="m3 20 6-11 4 6 3-4 5 9z"/><circle cx="17" cy="6" r="2"/></symbol><symbol id="i-mosque" viewBox="0 0 24 24"><path d="M3 21h18M6 21v-6a6 6 0 0 1 12 0v6M12 9V4M10 21v-3a2 2 0 0 1 4 0v3"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M12 3v18"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol><symbol id="i-fajr" viewBox="0 0 24 24"><path d="M7.5 17a4.5 4.5 0 0 1 9 0Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 17h18M12 10V4M9.6 6.4 12 4l2.4 2.4M7.2 12.2 5.9 10.9M16.8 12.2l1.3-1.3M8 20.5h8"/></symbol><symbol id="i-zuhr" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 7.2l1.6-1.6M5.6 18.4l1.6-1.6M16.8 16.8l1.6 1.6"/></symbol><symbol id="i-asr" viewBox="0 0 24 24"><circle cx="12" cy="13" r="3.6" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M12 4.6v2.2M3.6 13h2.2M18.2 13h2.2M6.1 7.1l1.5 1.5M17.9 7.1l-1.5 1.5M3 20h18"/></symbol><symbol id="i-maghrib" viewBox="0 0 24 24"><path d="M7.5 15a4.5 4.5 0 0 1 9 0Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 15h18M12 4V8.4M10 6.5 12 8.5l2-2M6.8 11.2 5.6 10M17.2 11.2l1.2-1.2M6 18.5h12M9 21.5h6"/></symbol><symbol id="i-isha" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M17.5 3v4M15.5 5h4M20.5 9.5h.01"/></symbol><symbol id="i-jumma" viewBox="0 0 24 24"><path d="M7 21v-5a5 5 0 0 1 10 0v5Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 21h18M12 11V8.2M3.5 21V11.5l1.25-2 1.25 2V21M18 21V11.5l1.25-2 1.25 2V21M10.5 21v-2.5a1.5 1.5 0 0 1 3 0V21"/><circle cx="12" cy="6.9" r="1" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/></symbol></defs></svg>
 
 <!-- ============ NAVBAR ============ -->
 <header class="sticky top-0 z-50">
@@ -474,7 +512,7 @@ img,video{max-width:100%;height:auto}
       <p class="text-xs text-[var(--masjid-ink)]/70 mt-1" id="sheetStatus" aria-live="polite"></p>
     </div>
 
-    <div id="prayerCards" data-nosnippet class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md md:max-w-3xl mx-auto">
+    <div id="prayerCards" data-nosnippet role="group" aria-label="Today's prayer timings">
       <!-- filled by JS -->
     </div>
 
@@ -541,12 +579,12 @@ img,video{max-width:100%;height:auto}
         <thead>
           <tr class="text-white" style="background:var(--masjid-green);">
             <th class="px-4 py-3 rounded-tl-lg font-medium">Date</th>
-            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-cloud-sun"/></svg>Fajr</th>
-            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-sun"/></svg>Zuhr</th>
-            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-sunset"/></svg>Asr</th>
-            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-mountain"/></svg>Maghrib Azan</th>
-            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-mosque"/></svg>Maghrib Jamaat</th>
-            <th class="px-4 py-3 rounded-tr-lg font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-moon"/></svg>Isha</th>
+            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-fajr"/></svg>Fajr</th>
+            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-zuhr"/></svg>Zuhr</th>
+            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-asr"/></svg>Asr</th>
+            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-maghrib"/></svg>Maghrib Azan</th>
+            <th class="px-4 py-3 font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-jumma"/></svg>Maghrib Jamaat</th>
+            <th class="px-4 py-3 rounded-tr-lg font-medium"><svg class="icon mr-1" aria-hidden="true"><use href="#i-isha"/></svg>Isha</th>
           </tr>
         </thead>
         <tbody id="scheduleBody"></tbody>
@@ -828,15 +866,15 @@ function renderPrayerCards(){
   cardsWrap.innerHTML = '';
 
   const PRAYERS = [
-    { key:'fajr',    label:'Fajr',    icon:'i-cloud-sun',      min: pick('fajr', today.fajr) },
-    { key:'zuhr',    label:'Zuhr',    icon:'i-sun',            min: pick('zuhr', today.zuhr), note: isFriday ? 'Today Jumma is prayed instead' : '' },
-    { key:'asr',     label:'Asr',     icon:'i-sunset', min: pick('asr', today.asr) },
-    { key:'maghrib', label:'Maghrib', icon:'i-mountain',
+    { key:'fajr',    label:'Fajr',    icon:'i-fajr',  min: pick('fajr', today.fajr) },
+    { key:'zuhr',    label:'Zuhr',    icon:'i-zuhr',  min: pick('zuhr', today.zuhr), note: isFriday ? 'Today Jumma is prayed instead' : '' },
+    { key:'asr',     label:'Asr',     icon:'i-asr', min: pick('asr', today.asr) },
+    { key:'maghrib', label:'Maghrib', icon:'i-maghrib',
       min: today.maghrib + MAGHRIB_JAMAAT_GAP,
       note: 'Azan ' + fmt(today.maghrib) + ' (sunset) · Jamaat +' + MAGHRIB_JAMAAT_GAP + ' min' },
-    { key:'isha',    label:'Isha',    icon:'i-moon',           min: pick('isha', today.isha) },
+    { key:'isha',    label:'Isha',    icon:'i-isha', min: pick('isha', today.isha) },
   ];
-  const jumma = { key:'jumma', label:'Jumma', icon:'i-book', min: timeStrToMins(eff.jumma), note:'Fridays only' };
+  const jumma = { key:'jumma', label:'Jumma', icon:'i-jumma', min: timeStrToMins(eff.jumma), note:'Fridays only' };
   const allCards = [...PRAYERS, jumma];
 
   // "Next" badge: on Friday Zuhr is skipped in favour of Jumma; other days Jumma is skipped
@@ -850,21 +888,16 @@ function renderPrayerCards(){
   allCards.forEach(p => {
     const isNext = p.key === nextKey;
     const card = document.createElement('div');
-    card.className = `prayer-card glass rounded-2xl px-5 py-3.5 flex items-center justify-between gap-4 ${isNext ? 'is-next' : ''}`;
+    card.className = 'prayer-card glass pc' + (isNext ? ' is-next' : '');
     card.innerHTML = `
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center"
-             style="background:${isNext ? 'var(--masjid-gold)' : 'var(--masjid-light)'};">
-          <svg class="icon" aria-hidden="true" style="color:${isNext ? '#123524' : 'var(--masjid-green)'};"><use href="#${p.icon}"/></svg>
-        </div>
-        <div>
-          <p class="text-xs uppercase tracking-wide text-[var(--masjid-green)] font-semibold">${p.label}</p>
-          ${p.note ? `<p class="text-xs text-[var(--masjid-ink)]/70">${p.note}</p>` : ''}
-        </div>
+      <div class="pc-icon"><svg class="icon" aria-hidden="true"><use href="#${p.icon}"/></svg></div>
+      <div class="pc-text">
+        <p class="pc-label">${p.label}</p>
+        ${p.note ? `<p class="pc-note">${p.note}</p>` : ''}
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <p class="text-lg font-bold text-[var(--masjid-deep)]">${fmt(p.min)}</p>
-        ${isNext ? `<span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" style="background:var(--masjid-gold);color:var(--masjid-deep);"><span class="w-1.5 h-1.5 rounded-full bg-[var(--masjid-deep)] pulse-dot"></span> Next</span>` : ''}
+      <div class="pc-right">
+        <p class="pc-time">${fmt(p.min)}</p>
+        ${isNext ? `<span class="pc-next"><span class="pulse-dot" style="width:6px;height:6px;border-radius:9999px;background:var(--masjid-deep);display:inline-block"></span> Next</span>` : ''}
       </div>
     `;
     cardsWrap.appendChild(card);
@@ -872,7 +905,6 @@ function renderPrayerCards(){
 }
 
 renderPrayerCards();
-
 /* ---------- Mobile menu closes after choosing a link ---------- */
 document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
   document.getElementById('mobileMenu').classList.add('hidden');
