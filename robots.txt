@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jamiamasjid77.vercel.app/sitemap.xml
