@@ -23,8 +23,8 @@
 <!-- Fonts: non-blocking (media=print swap trick). Only the weights that are really used. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap"></noscript>
 
 <!-- Analytics: dataLayer stub now, the real gtag.js loads on first interaction (or 8s after load) -->
 <script>
@@ -655,6 +655,83 @@ body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-
 .quick-card{display:grid;grid-template-columns:3rem 1fr;column-gap:1rem;align-items:center;text-align:left}
 .quick-card .pc-icon{grid-row:span 2;margin:0}
 .quick-card h3{margin:0}
+</style>
+<style id="ref">
+/* ===== REFERENCE THEME — deep green / gold / mint, rounded cards ===== */
+:root{--masjid-deep:#0A4B2E;--masjid-green:#12713F;--masjid-light:#D8E9DC;--masjid-cream:#E9F2EB;--masjid-gold:#D9A441;--masjid-gold-2:#EBC171;--masjid-ink:#16301F;--masjid-gold-text:#8A6012}
+body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:#E9F2EB;line-height:1.6}
+.font-display{font-family:'Cairo',system-ui,sans-serif;font-weight:800;letter-spacing:0}
+.sec-head h2,.quick-card h3{font-family:'Cairo',sans-serif;font-weight:800;color:var(--masjid-deep)}
+.rule{width:3.2rem;height:4px;border-radius:4px;background:var(--masjid-gold)}
+.site-h,.home .site-h.scrolled{background:#0A4B2E;border-bottom:0;backdrop-filter:none}
+.home .site-h{background:transparent}
+.site-h .bn{font-family:'Cairo',sans-serif;font-weight:800;font-size:1.1rem}
+.dnav{gap:.4rem}
+.dnav a{border-radius:0;padding:.5rem .75rem;font-weight:500;background:none}
+.dnav a:hover{background:none;color:var(--masjid-gold-2)}
+.dnav a[aria-current=page]{background:none;color:var(--masjid-gold);box-shadow:inset 0 -2px 0 var(--masjid-gold)}
+.mmenu{background:#0A4B2E}
+.btn-gold,.btn-line{border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;padding:.8rem 1.7rem}
+.btn-gold{background:var(--masjid-gold);color:#06301D;box-shadow:0 10px 22px -12px rgba(217,164,65,.9)}
+.btn-gold:hover{background:var(--masjid-gold-2)}
+.btn-line{border:1.5px solid rgba(255,255,255,.7);color:#fff}
+.on-light .btn-line{color:var(--masjid-deep);border-color:var(--masjid-green)}
+.hero{background:radial-gradient(90% 120% at 12% 25%,#0F6B3D 0,#0A5530 55%,#073F24 100%);padding:8rem 0 9.5rem}
+.hero::before{opacity:.45}
+.hero .scallop{display:none}
+.hero-grid{z-index:1}
+.hero-bis{font-family:'Amiri',serif;color:rgba(235,193,113,.55);font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.6;margin-bottom:.4rem}
+.hero-ur{color:var(--masjid-gold);font-size:1.45rem;font-weight:700}
+.hero h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.12;font-weight:800;color:#fff}
+.mihrab{max-width:22rem;padding:2.2rem 1.4rem 2rem;border-radius:12rem 12rem 22px 22px;background:radial-gradient(120% 70% at 50% 8%,#2a2210 0,#0d0d0d 55%,#050505 100%);border:2px solid var(--masjid-gold);box-shadow:0 0 0 7px #0b0b0b,0 0 0 9px rgba(217,164,65,.75),0 40px 70px -26px rgba(0,0,0,.75)}
+.mi-orn{width:5.2rem;height:5.2rem;margin:.3rem auto .4rem;filter:drop-shadow(0 6px 14px rgba(217,164,65,.45))}
+.mh-k{color:var(--masjid-gold-2)}
+.mh-name{font-size:2.3rem;font-weight:800}
+.mh-cd{font-family:'Cairo',sans-serif;font-weight:700}
+.mh-dates{border-top-color:rgba(217,164,65,.45)}
+.qlinks{position:relative;z-index:5;margin-top:-5.2rem;padding-bottom:1rem}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem}
+@media(min-width:760px){.qgrid{grid-template-columns:repeat(4,1fr);gap:1.2rem}}
+.qtile{background:#fff;border-radius:18px;padding:1.4rem .8rem;text-align:center;box-shadow:0 18px 36px -22px rgba(10,75,46,.55);transition:transform .3s,box-shadow .3s;border:1px solid rgba(18,113,63,.08)}
+.qtile:hover{transform:translateY(-5px);box-shadow:0 24px 40px -22px rgba(10,75,46,.6)}
+.qtile .qi{width:3.4rem;height:3.4rem;border-radius:14px;background:var(--masjid-light);color:var(--masjid-green);display:flex;align-items:center;justify-content:center;margin:0 auto .6rem}
+.qtile .qi .icon{width:1.7rem;height:1.7rem;stroke-width:1.6}
+.qtile .t{display:block;font-weight:700;font-size:.95rem;color:var(--masjid-deep)}
+.qtile .s{display:block;font-size:.75rem;color:rgba(22,48,31,.65)}
+.glass{background:#fff;border:1px solid rgba(18,113,63,.08);border-radius:18px;box-shadow:0 14px 34px -24px rgba(10,75,46,.5)}
+.quick-card{border-radius:18px}
+.person{border-radius:20px}
+.portrait{border-color:var(--masjid-gold);box-shadow:0 0 0 5px #fff,0 0 0 7px rgba(217,164,65,.6)}
+.role{background:var(--masjid-light);color:var(--masjid-green);border-color:rgba(18,113,63,.2)}
+.pill-note{border-radius:16px;border-color:rgba(18,113,63,.12)}
+.prayer-card.glass{background:#fff;border:1px solid rgba(18,113,63,.1);border-radius:18px;box-shadow:0 14px 30px -22px rgba(10,75,46,.5)}
+.prayer-card.glass::before{display:none}
+.prayer-card .pc-icon{background:var(--masjid-light);border:0;box-shadow:none;color:var(--masjid-green);--ic-accent:var(--masjid-gold)}
+.prayer-card .pc-label{font-family:'Cairo',sans-serif;font-weight:700;font-size:1.15rem;color:var(--masjid-deep)}
+.prayer-card .pc-time{font-family:'Cairo',sans-serif;font-weight:800;font-size:1.2rem;color:var(--masjid-green)}
+.prayer-card .pc-note{color:var(--masjid-gold-text)}
+.prayer-card.glass.is-next{background:linear-gradient(135deg,#12713F,#0A4B2E);border:0;box-shadow:0 22px 38px -20px rgba(10,75,46,.8)}
+.prayer-card.is-next .pc-label{color:var(--masjid-gold-2)}
+.prayer-card.is-next .pc-time{color:#fff}
+.prayer-card.is-next .pc-icon{background:var(--masjid-gold);color:#06301D;--ic-accent:#06301D}
+.prayer-card.is-now{border-color:var(--masjid-green);box-shadow:0 0 0 2px rgba(18,113,63,.25)}
+.pc-next{background:var(--masjid-gold);color:#06301D}
+.page-hero{background:radial-gradient(110% 130% at 15% 0,#0F6B3D 0,#0A5530 55%,#073F24 100%)}
+.page-hero h1{font-weight:800}
+.crumbs{color:var(--masjid-gold-2)}
+.cta-band{background:radial-gradient(90% 160% at 10% 0,#12713F 0,#0A4B2E 70%);color:#fff;padding:3.2rem 0;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background:var(--pat);opacity:.5}
+.cta-in{position:relative;display:grid;gap:1.4rem;align-items:center}
+@media(min-width:820px){.cta-in{grid-template-columns:1.3fr 1fr}.cta-in .btns{justify-content:flex-end}}
+.cta-in h2{font-size:clamp(1.6rem,3.4vw,2.2rem);font-weight:800;line-height:1.2}
+.cta-in p{color:rgba(255,255,255,.85);margin-top:.4rem;font-size:.95rem}
+.cta-in .btns{margin-top:0}
+.tab-btn{border-color:rgba(18,113,63,.25);background:#fff}
+.tab-btn.active{background:var(--masjid-green);color:#fff}
+#scheduleTable thead tr,#scheduleTable thead th:first-child{background:var(--masjid-deep)!important}
+.cd-strip{background:linear-gradient(135deg,#12713F,#0A4B2E);border:0;border-radius:18px}
+.site-f{background:#0A4B2E}
+.f-base{border-top-color:rgba(217,164,65,.3)}
 </style>
 </head>
 <body class="">

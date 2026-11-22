@@ -23,8 +23,8 @@
 <!-- Fonts: non-blocking (media=print swap trick). Only the weights that are really used. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap"></noscript>
 
 <!-- Analytics: dataLayer stub now, the real gtag.js loads on first interaction (or 8s after load) -->
 <script>
@@ -656,6 +656,111 @@ body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-
 .quick-card .pc-icon{grid-row:span 2;margin:0}
 .quick-card h3{margin:0}
 </style>
+<style id="ref">
+/* ===== REFERENCE THEME — deep green / gold / mint, rounded cards ===== */
+:root{--masjid-deep:#0A4B2E;--masjid-green:#12713F;--masjid-light:#D8E9DC;--masjid-cream:#E9F2EB;--masjid-gold:#D9A441;--masjid-gold-2:#EBC171;--masjid-ink:#16301F;--masjid-gold-text:#8A6012}
+body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:#E9F2EB;line-height:1.6}
+.font-display{font-family:'Cairo',system-ui,sans-serif;font-weight:800;letter-spacing:0}
+.sec-head h2,.quick-card h3{font-family:'Cairo',sans-serif;font-weight:800;color:var(--masjid-deep)}
+.rule{width:3.2rem;height:4px;border-radius:4px;background:var(--masjid-gold)}
+.site-h,.home .site-h.scrolled{background:#0A4B2E;border-bottom:0;backdrop-filter:none}
+.home .site-h{background:transparent}
+.site-h .bn{font-family:'Cairo',sans-serif;font-weight:800;font-size:1.1rem}
+.dnav{gap:.4rem}
+.dnav a{border-radius:0;padding:.5rem .75rem;font-weight:500;background:none}
+.dnav a:hover{background:none;color:var(--masjid-gold-2)}
+.dnav a[aria-current=page]{background:none;color:var(--masjid-gold);box-shadow:inset 0 -2px 0 var(--masjid-gold)}
+.mmenu{background:#0A4B2E}
+.btn-gold,.btn-line{border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;padding:.8rem 1.7rem}
+.btn-gold{background:var(--masjid-gold);color:#06301D;box-shadow:0 10px 22px -12px rgba(217,164,65,.9)}
+.btn-gold:hover{background:var(--masjid-gold-2)}
+.btn-line{border:1.5px solid rgba(255,255,255,.7);color:#fff}
+.on-light .btn-line{color:var(--masjid-deep);border-color:var(--masjid-green)}
+.hero{background:radial-gradient(90% 120% at 12% 25%,#0F6B3D 0,#0A5530 55%,#073F24 100%);padding:8rem 0 9.5rem}
+.hero::before{opacity:.45}
+.hero .scallop{display:none}
+.hero-grid{z-index:1}
+.hero-bis{font-family:'Amiri',serif;color:rgba(235,193,113,.55);font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.6;margin-bottom:.4rem}
+.hero-ur{color:var(--masjid-gold);font-size:1.45rem;font-weight:700}
+.hero h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.12;font-weight:800;color:#fff}
+.mihrab{max-width:22rem;padding:2.2rem 1.4rem 2rem;border-radius:12rem 12rem 22px 22px;background:radial-gradient(120% 70% at 50% 8%,#2a2210 0,#0d0d0d 55%,#050505 100%);border:2px solid var(--masjid-gold);box-shadow:0 0 0 7px #0b0b0b,0 0 0 9px rgba(217,164,65,.75),0 40px 70px -26px rgba(0,0,0,.75)}
+.mi-orn{width:5.2rem;height:5.2rem;margin:.3rem auto .4rem;filter:drop-shadow(0 6px 14px rgba(217,164,65,.45))}
+.mh-k{color:var(--masjid-gold-2)}
+.mh-name{font-size:2.3rem;font-weight:800}
+.mh-cd{font-family:'Cairo',sans-serif;font-weight:700}
+.mh-dates{border-top-color:rgba(217,164,65,.45)}
+.qlinks{position:relative;z-index:5;margin-top:-5.2rem;padding-bottom:1rem}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem}
+@media(min-width:760px){.qgrid{grid-template-columns:repeat(4,1fr);gap:1.2rem}}
+.qtile{background:#fff;border-radius:18px;padding:1.4rem .8rem;text-align:center;box-shadow:0 18px 36px -22px rgba(10,75,46,.55);transition:transform .3s,box-shadow .3s;border:1px solid rgba(18,113,63,.08)}
+.qtile:hover{transform:translateY(-5px);box-shadow:0 24px 40px -22px rgba(10,75,46,.6)}
+.qtile .qi{width:3.4rem;height:3.4rem;border-radius:14px;background:var(--masjid-light);color:var(--masjid-green);display:flex;align-items:center;justify-content:center;margin:0 auto .6rem}
+.qtile .qi .icon{width:1.7rem;height:1.7rem;stroke-width:1.6}
+.qtile .t{display:block;font-weight:700;font-size:.95rem;color:var(--masjid-deep)}
+.qtile .s{display:block;font-size:.75rem;color:rgba(22,48,31,.65)}
+.glass{background:#fff;border:1px solid rgba(18,113,63,.08);border-radius:18px;box-shadow:0 14px 34px -24px rgba(10,75,46,.5)}
+.quick-card{border-radius:18px}
+.person{border-radius:20px}
+.portrait{border-color:var(--masjid-gold);box-shadow:0 0 0 5px #fff,0 0 0 7px rgba(217,164,65,.6)}
+.role{background:var(--masjid-light);color:var(--masjid-green);border-color:rgba(18,113,63,.2)}
+.pill-note{border-radius:16px;border-color:rgba(18,113,63,.12)}
+.prayer-card.glass{background:#fff;border:1px solid rgba(18,113,63,.1);border-radius:18px;box-shadow:0 14px 30px -22px rgba(10,75,46,.5)}
+.prayer-card.glass::before{display:none}
+.prayer-card .pc-icon{background:var(--masjid-light);border:0;box-shadow:none;color:var(--masjid-green);--ic-accent:var(--masjid-gold)}
+.prayer-card .pc-label{font-family:'Cairo',sans-serif;font-weight:700;font-size:1.15rem;color:var(--masjid-deep)}
+.prayer-card .pc-time{font-family:'Cairo',sans-serif;font-weight:800;font-size:1.2rem;color:var(--masjid-green)}
+.prayer-card .pc-note{color:var(--masjid-gold-text)}
+.prayer-card.glass.is-next{background:linear-gradient(135deg,#12713F,#0A4B2E);border:0;box-shadow:0 22px 38px -20px rgba(10,75,46,.8)}
+.prayer-card.is-next .pc-label{color:var(--masjid-gold-2)}
+.prayer-card.is-next .pc-time{color:#fff}
+.prayer-card.is-next .pc-icon{background:var(--masjid-gold);color:#06301D;--ic-accent:#06301D}
+.prayer-card.is-now{border-color:var(--masjid-green);box-shadow:0 0 0 2px rgba(18,113,63,.25)}
+.pc-next{background:var(--masjid-gold);color:#06301D}
+.page-hero{background:radial-gradient(110% 130% at 15% 0,#0F6B3D 0,#0A5530 55%,#073F24 100%)}
+.page-hero h1{font-weight:800}
+.crumbs{color:var(--masjid-gold-2)}
+.cta-band{background:radial-gradient(90% 160% at 10% 0,#12713F 0,#0A4B2E 70%);color:#fff;padding:3.2rem 0;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background:var(--pat);opacity:.5}
+.cta-in{position:relative;display:grid;gap:1.4rem;align-items:center}
+@media(min-width:820px){.cta-in{grid-template-columns:1.3fr 1fr}.cta-in .btns{justify-content:flex-end}}
+.cta-in h2{font-size:clamp(1.6rem,3.4vw,2.2rem);font-weight:800;line-height:1.2}
+.cta-in p{color:rgba(255,255,255,.85);margin-top:.4rem;font-size:.95rem}
+.cta-in .btns{margin-top:0}
+.tab-btn{border-color:rgba(18,113,63,.25);background:#fff}
+.tab-btn.active{background:var(--masjid-green);color:#fff}
+#scheduleTable thead tr,#scheduleTable thead th:first-child{background:var(--masjid-deep)!important}
+.cd-strip{background:linear-gradient(135deg,#12713F,#0A4B2E);border:0;border-radius:18px}
+.site-f{background:#0A4B2E}
+.f-base{border-top-color:rgba(217,164,65,.3)}
+.hero-art{position:relative;width:100%;max-width:34rem;margin:0 auto}
+.hero-img{width:100%;height:auto;border-radius:22px;box-shadow:0 40px 70px -30px rgba(0,0,0,.65);border:1px solid rgba(217,164,65,.35)}
+.hero-art .mihrab{position:relative;z-index:2;width:calc(100% - 2rem);max-width:none;margin:-2.4rem auto 0;padding:1.1rem 1rem 1rem;border-radius:18px;background:linear-gradient(160deg,#0b0b0b,#1b1608);border:1.5px solid var(--masjid-gold);box-shadow:0 22px 40px -20px rgba(0,0,0,.8)}
+.hero-art .mh-name{font-size:1.7rem;line-height:1.15}
+.hero-art .mh-cd{font-size:1.9rem;margin-top:.3rem}
+.hero-art .mh-dates{margin-top:.7rem;padding-top:.6rem}
+@media(min-width:960px){.hero-grid{grid-template-columns:1fr 1.05fr}}
+</style>
+<style id="ref2">
+/* Next prayer card — green + gold, segmented countdown */
+.hero-art .mihrab{display:grid;grid-template-columns:1fr auto;gap:.2rem 1rem;align-items:center;text-align:left;padding:1.2rem 1.1rem 1.1rem;border-radius:20px;background:linear-gradient(150deg,#12713F 0%,#0A4B2E 60%,#073F24 100%);border:1.5px solid var(--masjid-gold);box-shadow:0 0 0 4px rgba(10,75,46,.55),0 26px 44px -22px rgba(0,0,0,.75)}
+.hero-art .mh-k{grid-column:1/-1;display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--masjid-gold-2)}
+.hero-art .mh-k::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--masjid-gold);animation:pulse-ring 1.8s infinite}
+.hero-art .mh-name{grid-column:1;font-size:2rem;line-height:1.1;color:#fff;text-align:left}
+.hero-art .mh-time{grid-column:2;justify-self:end;background:var(--masjid-gold);color:#06301D;font-size:.85rem;font-weight:800;padding:.2rem .8rem;border-radius:999px;white-space:nowrap}
+.hero-art .mh-cd{grid-column:1/-1}
+.hero-art .mh-sub{grid-column:1/-1;text-align:center;margin-top:.5rem;color:rgba(255,255,255,.75)}
+.hero-art .mh-dates{grid-column:1/-1;margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(217,164,65,.4);text-align:center;color:rgba(255,255,255,.9)}
+.mh-cd{display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:.7rem;font-size:1rem}
+.mh-cd b{display:inline-flex;flex-direction:column;align-items:center;min-width:4rem;padding:.55rem .4rem .4rem;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(217,164,65,.5);font-family:'Cairo',sans-serif;font-size:2rem;line-height:1;font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
+.mh-cd b::after{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--masjid-gold-2);margin-top:.35rem}
+.mh-cd b:nth-of-type(1)::after{content:"Hours"}
+.mh-cd b:nth-of-type(2)::after{content:"Min"}
+.mh-cd b:nth-of-type(3)::after{content:"Sec"}
+.mh-cd i{font-style:normal;font-weight:800;font-size:1.6rem;color:var(--masjid-gold);align-self:flex-start;margin-top:.45rem}
+.cd-strip .mh-cd{justify-content:center;margin:0}
+@media(min-width:640px){.cd-strip .mh-cd{justify-content:flex-end}}
+@media(max-width:400px){.mh-cd b{min-width:3.4rem;font-size:1.7rem}.hero-art .mh-name{font-size:1.7rem}}
+</style>
 </head>
 <body class="home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol><symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-cloud-sun" viewBox="0 0 24 24"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4M15.9 12.7a4 4 0 0 0-5.9-4.2"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol><symbol id="i-sunset" viewBox="0 0 24 24"><path d="M12 10V2M4.9 10.9l1.4 1.4M2 18h2M20 18h2M19.1 10.9l-1.4 1.4M22 22H2M16 18a4 4 0 0 0-8 0M16 6l-4 4-4-4"/></symbol><symbol id="i-mountain" viewBox="0 0 24 24"><path d="m3 20 6-11 4 6 3-4 5 9z"/><circle cx="17" cy="6" r="2"/></symbol><symbol id="i-mosque" viewBox="0 0 24 24"><path d="M3 21h18M6 21v-6a6 6 0 0 1 12 0v6M12 9V4M10 21v-3a2 2 0 0 1 4 0v3"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M12 3v18"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol><symbol id="i-fajr" viewBox="0 0 24 24"><path d="M7.5 17a4.5 4.5 0 0 1 9 0Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 17h18M12 10V4M9.6 6.4 12 4l2.4 2.4M7.2 12.2 5.9 10.9M16.8 12.2l1.3-1.3M8 20.5h8"/></symbol><symbol id="i-zuhr" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 7.2l1.6-1.6M5.6 18.4l1.6-1.6M16.8 16.8l1.6 1.6"/></symbol><symbol id="i-asr" viewBox="0 0 24 24"><circle cx="12" cy="13" r="3.6" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M12 4.6v2.2M3.6 13h2.2M18.2 13h2.2M6.1 7.1l1.5 1.5M17.9 7.1l-1.5 1.5M3 20h18"/></symbol><symbol id="i-maghrib" viewBox="0 0 24 24"><path d="M7.5 15a4.5 4.5 0 0 1 9 0Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 15h18M12 4V8.4M10 6.5 12 8.5l2-2M6.8 11.2 5.6 10M17.2 11.2l1.2-1.2M6 18.5h12M9 21.5h6"/></symbol><symbol id="i-isha" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M17.5 3v4M15.5 5h4M20.5 9.5h.01"/></symbol><symbol id="i-jumma" viewBox="0 0 24 24"><path d="M7 21v-5a5 5 0 0 1 10 0v5Z" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/><path d="M3 21h18M12 11V8.2M3.5 21V11.5l1.25-2 1.25 2V21M18 21V11.5l1.25-2 1.25 2V21M10.5 21v-2.5a1.5 1.5 0 0 1 3 0V21"/><circle cx="12" cy="6.9" r="1" style="fill:var(--ic-accent,#C8A24A);fill-opacity:.38"/></symbol></defs></svg>
@@ -668,13 +773,19 @@ body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-
 <nav id="mobileMenu" class="mmenu hidden" aria-label="Mobile"><a href="index.html" aria-current="page">Home</a><a href="prayer-timings.html">Today's Prayer Timings</a><a href="imam-muazzin.html">Imam &amp; Muazzin</a><a href="location-contact.html">Location &amp; Contact</a></nav></header>
 <main id="main">
 <section class="hero"><img class="hero-photo" src="hero.webp" alt="" width="1600" height="900" decoding="async" onerror="this.remove()">
-<div class="wrap hero-grid"><div class="hero-in"><p class="hero-ur font-urdu" lang="ur" dir="rtl" style="text-align:left">نماز قائم کرو، اللہ سے جُڑے رہو</p>
+<div class="wrap hero-grid"><div class="hero-in"><p class="hero-bis font-urdu" lang="ar" dir="rtl" style="text-align:left">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p><p class="hero-ur font-urdu" lang="ur" dir="rtl" style="text-align:left">نماز قائم کرو، اللہ سے جُڑے رہو</p>
 <h1 class="font-display">Jamia Masjid Ghousia School Wali</h1>
 <p class="lead">"Establish prayer and remain connected to Allah." Daily Jamaat times, the Imam and Muazzin, and directions to the masjid — all in one place.</p>
 <p class="addr"><svg class="icon mt-1" aria-hidden="true"><use href="#i-pin"/></svg><span>Chak No. 77 RB, in front of Dera Ch. Mola Baksh Gujjar (next to Govt. Boys High School), Khurrianwala, Faisalabad</span></p>
 <div class="btns"><a href="prayer-timings.html" class="btn-gold">View Today's Prayer Timings <svg class="icon rot" aria-hidden="true"><use href="#i-down"/></svg></a><a href="location-contact.html" class="btn-line"><svg class="icon " aria-hidden="true"><use href="#i-map"/></svg> Location &amp; Contact</a></div></div>
-<div class="mihrab" data-nosnippet><svg class="icon mi" aria-hidden="true"><use href="#i-moon"/></svg><p class="mh-k">Next prayer</p><p class="mh-name font-display" data-next-name>—</p><p class="mh-time" data-next-time></p><p class="mh-cd" data-countdown>--:--:--</p><p class="mh-sub">remaining until Jamaat</p>
-<div class="mh-dates"><span data-date></span><span><span data-hijri></span></span></div></div></div><span class="scallop"></span></section>
+<div class="hero-art"><img class="hero-img" src="hero-art.webp" alt="Golden Islamic arch with crescent, stars and lanterns on a green background" width="1200" height="874" fetchpriority="high" decoding="async"><div class="mihrab" data-nosnippet><p class="mh-k">Next prayer</p><p class="mh-name font-display" data-next-name>—</p><p class="mh-time" data-next-time></p><p class="mh-cd" data-countdown>--:--:--</p><p class="mh-sub">remaining until Jamaat</p>
+<div class="mh-dates"><span data-date></span><span><span data-hijri></span></span></div></div></div></div><span class="scallop"></span></section>
+<section class="qlinks"><div class="wrap"><div class="qgrid">
+<a href="prayer-timings.html" class="qtile"><span class="qi"><svg class="icon" aria-hidden="true"><use href="#i-sunset"/></svg></span><span class="t">Prayer Timings</span><span class="s">Daily &amp; 12-month</span></a>
+<a href="imam-muazzin.html" class="qtile"><span class="qi"><svg class="icon" aria-hidden="true"><use href="#i-mosque"/></svg></span><span class="t">Imam &amp; Muazzin</span><span class="s">Meet our team</span></a>
+<a href="location-contact.html" class="qtile"><span class="qi"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span><span class="t">Location</span><span class="s">Map &amp; directions</span></a>
+<a href="mailto:jamiamasjidghousia77@gmail.com" class="qtile"><span class="qi"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span><span class="t">Contact</span><span class="s">Email the masjid</span></a>
+</div></div></section>
 <section id="prayers" class="sec"><div class="wrap"><div class="sec-head"><h2 class="font-display">Today's Jamaat Timings</h2><span class="rule"></span><p data-nosnippet id="todayDateLabel"></p><p class="text-xs mt-1" id="sheetStatus" aria-live="polite"></p></div>
 <div id="prayerCards" data-nosnippet role="group" aria-label="Today's prayer timings"></div>
 <div class="pill-note"><svg class="icon mt-1 shrink-0" aria-hidden="true"><use href="#i-info"/></svg><p>Fajr, Zuhr, Asr and Isha follow the masjid's standing Jamaat schedule. <strong>Maghrib Azan is at sunset and Jamaat is 4 minutes after Azan</strong> — it changes daily. See the full <a href="prayer-timings.html#schedule" class="underline font-medium" style="color:var(--masjid-green)">12‑month schedule</a>.</p></div></div></section>
@@ -760,6 +871,7 @@ body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-
 
 
 
+<section class="cta-band"><div class="wrap cta-in"><div><h2 class="font-display">Join us for every Jamaat</h2><p>Come early, pray in congregation, and stay connected with the masjid community.</p></div><div class="btns"><a href="https://maps.app.goo.gl/xpiGDhADiZ7SJodq8" target="_blank" rel="noopener" class="btn-gold"><svg class="icon" aria-hidden="true"><use href="#i-map"/></svg> Get Directions</a><a href="prayer-timings.html" class="btn-line">Prayer Timings</a></div></div></section>
 <section id="location" class="sec"><div class="wrap"><div class="sec-head"><h2 class="font-display">Find the Masjid</h2><span class="rule"></span></div><div class="grid2"><div class="glass mapcard"><div id="mapBox"><button type="button" id="mapLoad" class="map-facade" aria-label="Load interactive Google Map of the masjid location"><svg class="icon pin" aria-hidden="true"><use href="#i-pin"/></svg><span class="font-display" style="font-size:1.4rem">Jamia Masjid Ghousia School Wali</span><span class="cta"><svg class="icon " aria-hidden="true"><use href="#i-map"/></svg> Tap to load map</span></button></div></div><div class="glass facts"><h3 class="font-display" style="font-size:1.7rem;color:var(--masjid-deep)">Contact the Masjid</h3>
 <div class="contact-row"><div class="pc-icon"><svg class="icon " aria-hidden="true"><use href="#i-pin"/></svg></div><div><p class="pc-label">Address</p><p class="text-sm mt-1">Jamia Masjid Ghousia School Wali, Chak No. 77 RB, in front of Dera Ch. Mola Baksh Gujjar (next to Govt. Boys High School), Khurrianwala, Faisalabad.</p></div></div>
 <div class="contact-row"><div class="pc-icon"><svg class="icon " aria-hidden="true"><use href="#i-mail"/></svg></div><div><p class="pc-label">Email</p><p class="text-sm mt-1"><a href="mailto:jamiamasjidghousia77@gmail.com" class="underline font-medium" style="color:var(--masjid-green)">jamiamasjidghousia77@gmail.com</a></p></div></div>
@@ -991,7 +1103,8 @@ function tick(){
   const n=pkNow(); let rem=NEXT.min*60-((n.hour*60+n.minute)*60+n.second);
   if(rem<0){ NEXT=null; renderPrayerCards(); return; }
   const t=[Math.floor(rem/3600),Math.floor(rem%3600/60),rem%60].map(v=>String(v).padStart(2,'0')).join(':');
-  document.querySelectorAll('[data-countdown]').forEach(e=>e.textContent=t);
+  const h=t.split(':').map(v=>'<b>'+v+'</b>').join('<i>:</i>');
+  document.querySelectorAll('[data-countdown]').forEach(e=>e.innerHTML=h);
 }
 setInterval(tick,1000);
 /* =====================================================================
