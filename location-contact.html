@@ -20,7 +20,11 @@
 <meta property="og:title" content="Location &amp; Contact | Jamia Masjid Ghousia School Wali, Chak 77 RB">
 <meta property="og:description" content="Location, map, address and email of Jamia Masjid Ghousia School Wali, in front of Dera Ch. Mola Baksh Gujjar, Chak No. 77 RB, Khurrianwala, Faisalabad.">
 <meta property="og:url" content="https://jamiamasjid77.vercel.app/location-contact.html">
-<meta property="og:image" content="https://jamiamasjid77.vercel.app/logo.webp">
+<meta property="og:image" content="https://jamiamasjid77.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jamiamasjid77.vercel.app/og-image.jpg">
 <meta name="robots" content="index, follow">
 <link rel="icon" id="favicon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -32,8 +36,8 @@
 <!-- Fonts: non-blocking (media=print swap trick). Only the weights that are really used. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 
 <!-- Vercel Web Analytics -->
 <script>
@@ -434,6 +438,7 @@ img,video{max-width:100%;height:auto}
 .text-white\/70{color:rgb(255 255 255 / 0.7)}
 .text-white\/75{color:rgb(255 255 255 / 0.75)}
 .text-white\/80{color:rgb(255 255 255 / 0.8)}
+.text-white\/85{color:rgb(255 255 255 / 0.85)}
 .text-white\/90{color:rgb(255 255 255 / 0.9)}
 .opacity-\[0\.06\]{opacity:0.06}
 .opacity-\[0\.08\]{opacity:0.08}
@@ -763,7 +768,7 @@ body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-se
     </div>
 
     <div class="overflow-y-auto px-6 py-5 text-sm text-[var(--masjid-ink)]/85 leading-relaxed space-y-4">
-      <p class="text-xs text-[var(--masjid-green)] font-semibold">Jamia Masjid Ghousia — Official Website · Effective Date: January 1, 2026</p>
+      <p class="text-xs text-[var(--masjid-green)] font-semibold">Jamia Masjid Ghousia School Wali — Official Website · Effective Date: January 1, 2026</p>
 
       <div>
         <h4 class="font-semibold text-[var(--masjid-deep)] mb-1">1. Ownership Statement</h4>
@@ -821,7 +826,7 @@ body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-se
         <p>The Owner reserves all rights not expressly granted herein. This policy may be updated at any time without prior notice, and continued operation of this website under any domain or hosting arrangement constitutes ongoing assertion of these rights.</p>
       </div>
 
-      <p class="text-center text-xs font-semibold pt-2" style="color:var(--masjid-green);">© 2026 Jamia Masjid Ghousia. All Rights Reserved.</p>
+      <p class="text-center text-xs font-semibold pt-2" style="color:var(--masjid-green);">© 2026 Jamia Masjid Ghousia School Wali. All Rights Reserved.</p>
     </div>
   </div>
 </div>
@@ -842,7 +847,7 @@ copyrightModal.addEventListener('click',e=>{if(e.target===copyrightModal)copyrig
 document.addEventListener('keydown',e=>{if(e.key==='Escape')copyrightModal.classList.add('hidden')});
 
 (function(){const box=document.getElementById('mapBox'),btn=document.getElementById('mapLoad');if(!box||!btn)return;
-const MAP_SRC="https://www.google.com/maps?q=F8F3%2BWVM+Jamia+Masjid+Ghousia+School+Wali,+Chak+77+RB+Lohka+Kalaan&output=embed";let done=false;
+const MAP_SRC="https://www.google.com/maps?q=F8F3%2BWVM+Jamia+Masjid+Ghousia+School+Wali,+Chak+77+RB+Khurrianwala+Faisalabad&output=embed";let done=false;
 function loadMap(){if(done)return;done=true;const f=document.createElement('iframe');f.title='Jamia Masjid Ghousia School Wali Location';f.src=MAP_SRC;f.width='100%';f.height='100%';f.style.cssText='border:0;display:block;min-height:320px';f.loading='lazy';f.referrerPolicy='no-referrer-when-downgrade';box.replaceChildren(f);}
 btn.addEventListener('click',loadMap);
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();loadMap();}},{rootMargin:'150px'});io.observe(box);}})();

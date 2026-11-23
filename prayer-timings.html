@@ -20,7 +20,11 @@
 <meta property="og:title" content="Today's Prayer Timings | Jamia Masjid Ghousia School Wali, Khurrianwala">
 <meta property="og:description" content="Today's Jamaat timings (Fajr, Zuhr, Asr, Maghrib, Isha, Jumma) and the 12-month prayer schedule of Jamia Masjid Ghousia School Wali, Chak 77 RB, Khurrianwala, Faisalabad.">
 <meta property="og:url" content="https://jamiamasjid77.vercel.app/prayer-timings.html">
-<meta property="og:image" content="https://jamiamasjid77.vercel.app/logo.webp">
+<meta property="og:image" content="https://jamiamasjid77.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jamiamasjid77.vercel.app/og-image.jpg">
 <meta name="robots" content="index, follow">
 <link rel="icon" id="favicon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -32,8 +36,8 @@
 <!-- Fonts: non-blocking (media=print swap trick). Only the weights that are really used. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 
 <!-- Vercel Web Analytics -->
 <script>
@@ -434,6 +438,7 @@ img,video{max-width:100%;height:auto}
 .text-white\/70{color:rgb(255 255 255 / 0.7)}
 .text-white\/75{color:rgb(255 255 255 / 0.75)}
 .text-white\/80{color:rgb(255 255 255 / 0.8)}
+.text-white\/85{color:rgb(255 255 255 / 0.85)}
 .text-white\/90{color:rgb(255 255 255 / 0.9)}
 .opacity-\[0\.06\]{opacity:0.06}
 .opacity-\[0\.08\]{opacity:0.08}
@@ -839,7 +844,7 @@ body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-se
     </div>
 
     <div class="overflow-y-auto px-6 py-5 text-sm text-[var(--masjid-ink)]/85 leading-relaxed space-y-4">
-      <p class="text-xs text-[var(--masjid-green)] font-semibold">Jamia Masjid Ghousia — Official Website · Effective Date: January 1, 2026</p>
+      <p class="text-xs text-[var(--masjid-green)] font-semibold">Jamia Masjid Ghousia School Wali — Official Website · Effective Date: January 1, 2026</p>
 
       <div>
         <h4 class="font-semibold text-[var(--masjid-deep)] mb-1">1. Ownership Statement</h4>
@@ -897,7 +902,7 @@ body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-se
         <p>The Owner reserves all rights not expressly granted herein. This policy may be updated at any time without prior notice, and continued operation of this website under any domain or hosting arrangement constitutes ongoing assertion of these rights.</p>
       </div>
 
-      <p class="text-center text-xs font-semibold pt-2" style="color:var(--masjid-green);">© 2026 Jamia Masjid Ghousia. All Rights Reserved.</p>
+      <p class="text-center text-xs font-semibold pt-2" style="color:var(--masjid-green);">© 2026 Jamia Masjid Ghousia School Wali. All Rights Reserved.</p>
     </div>
   </div>
 </div>
@@ -996,7 +1001,7 @@ function getEffective(){ return { ...DEFAULTS, ...sheetTimes }; }
 
 
 let NEXT=null;
-const HIJRI_OFFSET_DAYS=0; // change to -1 / +1 if the local moon-sighting date differs
+const HIJRI_OFFSET_DAYS=-1; // Pakistan moon sighting is usually 1 day after Umm al-Qura; re-check each month (0 / -1 / +1)
 function hijri(){ try{ return new Intl.DateTimeFormat('en-GB-u-ca-islamic-umalqura',{timeZone:PK_TZ,day:'numeric',month:'long',year:'numeric'}).format(new Date(Date.now()+HIJRI_OFFSET_DAYS*864e5)); }catch(e){ return ''; } }
 function renderPrayerCards(){
   const now=pkNow();
@@ -1019,7 +1024,7 @@ function renderPrayerCards(){
   const seq=all.filter(p=>p.key==='jumma'?isFriday:!(isFriday&&p.key==='zuhr')).sort((a,b)=>a.min-b.min);
   const nxt=seq.find(p=>p.min>nowM), next=nxt||PRAYERS[0];
   const cur=[...seq].reverse().find(p=>p.min<=nowM)||seq[seq.length-1];
-  NEXT={min:next.min+(nxt?0:1440)};
+  NEXT={min:next.min+(nxt?0:1440),day:now.date};
   document.querySelectorAll('[data-next-name]').forEach(e=>e.textContent=next.label);
   document.querySelectorAll('[data-next-time]').forEach(e=>e.textContent=fmt(next.min)+(nxt?'':' (tomorrow)'));
   all.forEach(p=>{
@@ -1037,7 +1042,7 @@ function renderPrayerCards(){
 function tick(){
   if(!NEXT) return;
   const n=pkNow(); let rem=NEXT.min*60-((n.hour*60+n.minute)*60+n.second);
-  if(rem<0){ NEXT=null; renderPrayerCards(); return; }
+  if(rem<0||n.date!==NEXT.day){ NEXT=null; renderPrayerCards(); return; }
   const t=[Math.floor(rem/3600),Math.floor(rem%3600/60),rem%60].map(v=>String(v).padStart(2,'0')).join(':');
   const h=t.split(':').map(v=>'<b>'+v+'</b>').join('<i>:</i>');
   document.querySelectorAll('[data-countdown]').forEach(e=>e.innerHTML=h);
