@@ -12,4 +12,4 @@ Pages: index.html, prayer-timings.html, imam-muazzin.html, location-contact.html
 - HIJRI_OFFSET_DAYS — set to -1 or 1 if the moon-sighting date differs from the calendar shown
 
 ## Contact
-Only the masjid email exists in the original project. To add a phone or WhatsApp row, see the comment inside the contact block (tel: / https://wa.me/ links).
+Only the masjid email is shown on the site (no phone or WhatsApp).
