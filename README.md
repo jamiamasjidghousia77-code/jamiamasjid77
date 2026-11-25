@@ -12,7 +12,7 @@ Add the file, then replace the comment with the `<img>` tag written inside it:
 Until then the emblem icon is shown, exactly as before.
 
 ## Editable settings (index.html and prayer-timings.html)
-The inline JavaScript is minified, but the settings are still easy to find: search for the name, the value follows it.
+The inline JavaScript is now readable and split into commented sections (see the numbered section list at the top of the prayer script). Search for the name below; the value follows it.
 - SPREADSHEET_URL    — Google Apps Script link for Fajr, Zuhr, Asr, Isha and Jumma
 - MONTHS             — the masjid's permanent 12-month chart; Maghrib Jamaat = Azan + 4 min
 - HIJRI_OFFSET_DAYS  — currently -1 (Pakistan moon sighting is ~1 day after Umm al-Qura). Re-check each month: 0, -1 or 1
@@ -29,11 +29,13 @@ og-image.jpg (1200x630) is used for WhatsApp/Facebook/Twitter link previews. It 
 - Fonts: only Cairo (Latin/UI, one variable file) and Amiri (Urdu/Arabic). Cormorant Garamond and Manrope were never visible.
 - CSS: one merged <style> per page; rules that page does not use are removed.
   If you add NEW sections or utility classes later and they look unstyled, the page-specific CSS needs regenerating.
+- Fonts: one single stylesheet link per page (the duplicate <noscript> copy was removed).
 - JavaScript: Google Analytics is queued immediately but gtag.js is fetched only after the page has loaded and the browser is idle.
-- Images: hero art is served as AVIF (WebP fallback, 800w and 1200w); the logo is a 128px WebP (PNG kept for favicon/apple-touch-icon).
+- Images: hero art is served as AVIF (WebP fallback) in 480/640/800/1200w. File names contain a content hash (hero-art-800.f22c87de.avif) so they are cached for 1 year (immutable). If you replace a hero image, give it a NEW name and update index.html (preload + <picture>). The logo is a 128px WebP (PNG kept for favicon/apple-touch-icon).
+- Hero preload is the first thing in index.html <head>. Vercel Insights and Google Analytics both load only after the page has loaded.
 - Compression: Vercel serves HTML/CSS/JS/SVG/XML with Brotli (Gzip fallback) automatically; nothing to switch on.
   Check it with:  curl -sI -H "Accept-Encoding: br" https://jamiamasjid77.vercel.app/ | grep -i content-encoding
-- vercel.json only adds a 7-day cache header to the static images listed in it. If you replace one of those images
-  with a new picture under the same file name, visitors may see the old one for up to 7 days; use a new file name instead.
+- vercel.json: hashed hero images = 1 year immutable; logo.* and og-image.jpg = 30 days; plus nosniff / referrer / permissions headers on every file. HTML keeps Vercel's default (always revalidated).
+- /_vercel/insights/script.js only exists once Web Analytics is enabled in the Vercel project (Project > Analytics). If it is not enabled the request 404s and logs a console error, which costs Best Practices points.
 - Other hosts: Netlify and Cloudflare Pages compress automatically. On Apache enable mod_brotli/mod_deflate,
   on Nginx enable `brotli on;` / `gzip on;` for text/html, text/css, application/javascript, application/xml.
