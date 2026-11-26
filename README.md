@@ -12,7 +12,7 @@ Add the file, then replace the comment with the `<img>` tag written inside it:
 Until then the emblem icon is shown, exactly as before.
 
 ## Editable settings (index.html and prayer-timings.html)
-The inline JavaScript is now readable and split into commented sections (see the numbered section list at the top of the prayer script). Search for the name below; the value follows it.
+The inline JavaScript in these files is minified for speed, but the setting names below are unchanged: search for the name and edit the value that follows it. A readable, commented copy of every page is in the separate readable-source folder (keep it on your computer; do not upload it).
 - SPREADSHEET_URL    — Google Apps Script link for Fajr, Zuhr, Asr, Isha and Jumma
 - MONTHS             — the masjid's permanent 12-month chart; Maghrib Jamaat = Azan + 4 min
 - HIJRI_OFFSET_DAYS  — currently -1 (Pakistan moon sighting is ~1 day after Umm al-Qura). Re-check each month: 0, -1 or 1
@@ -39,3 +39,5 @@ og-image.jpg (1200x630) is used for WhatsApp/Facebook/Twitter link previews. It 
 - /_vercel/insights/script.js only exists once Web Analytics is enabled in the Vercel project (Project > Analytics). If it is not enabled the request 404s and logs a console error, which costs Best Practices points.
 - Other hosts: Netlify and Cloudflare Pages compress automatically. On Apache enable mod_brotli/mod_deflate,
   on Nginx enable `brotli on;` / `gzip on;` for text/html, text/css, application/javascript, application/xml.
+- Final performance pass: the inline JavaScript is minified; the header "scrolled" shadow uses an IntersectionObserver (no forced reflow); the two pulsing dots animate transform/opacity (compositor) instead of box-shadow; sections below the first screen use content-visibility:auto so the browser skips their layout until they are near the viewport.
+- Third-party timing: Google Fonts are requested right after the page's load event (not during first paint), the first Google Sheets fetch also starts after load (cached/default timings still show instantly), and Google Analytics (gtag.js) loads on the visitor's first interaction or GA_FALLBACK_MS (5000 ms) after load, whichever comes first. To make analytics count very short visits, lower GA_FALLBACK_MS (search for it in each page).
