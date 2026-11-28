@@ -17,6 +17,17 @@ The inline JavaScript in these files is minified for speed, but the setting name
 - MONTHS             — the masjid's permanent 12-month chart; Maghrib Jamaat = Azan + 4 min
 - HIJRI_OFFSET_DAYS  — currently -1 (Pakistan moon sighting is ~1 day after Umm al-Qura). Re-check each month: 0, -1 or 1
 
+## Maghrib from the Google Sheet (new, optional)
+Maghrib Azan always follows the 12-month chart (automatic). Jamaat is Azan + 4 minutes by default. You can now change this from the sheet,
+without touching the website. Add these two rows to the same sheet that already has Fajr / Zuhr / Asr / Isha / Jumma:
+- Maghrib Gap     — minutes after Azan, e.g. 3, 4 or 5 (0 to 60). Blank = 4. Jamaat stays automatic: it still moves daily with sunset.
+- Maghrib Manual  — a fixed Jamaat time, e.g. 6:05 PM (or 18:05). It wins over the gap and replaces today's Maghrib Jamaat.
+                    DELETE the value to go back to automatic.
+Both rows are optional; with neither of them the site behaves exactly as before (Azan + 4 min).
+The home page and the prayer-timings page (card, the "Jamaat is N minutes after Azan" notes and the Maghrib Jamaat column of the 12-month table)
+all follow the sheet. A manual time is shown only on today's row of the table. The default gap (4) is MAGHRIB_JAMAAT_GAP in the page script.
+If the Apps Script only returns fixed rows, it must also return these two rows (the row names are not case sensitive).
+
 ## Contact
 Only the masjid email exists in the original project. To add a phone or WhatsApp row, see the comment inside the
 contact block (tel: / https://wa.me/ links).
