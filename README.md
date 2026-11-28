@@ -52,3 +52,7 @@ og-image.jpg (1200x630) is used for WhatsApp/Facebook/Twitter link previews. It 
   on Nginx enable `brotli on;` / `gzip on;` for text/html, text/css, application/javascript, application/xml.
 - Final performance pass: the inline JavaScript is minified; the header "scrolled" shadow uses an IntersectionObserver (no forced reflow); the two pulsing dots animate transform/opacity (compositor) instead of box-shadow; sections below the first screen use content-visibility:auto so the browser skips their layout until they are near the viewport.
 - Third-party timing: Google Fonts are requested right after the page's load event (not during first paint), the first Google Sheets fetch also starts after load (cached/default timings still show instantly), and Google Analytics (gtag.js) loads on the visitor's first interaction or GA_FALLBACK_MS (5000 ms) after load, whichever comes first. To make analytics count very short visits, lower GA_FALLBACK_MS (search for it in each page).
+
+## Islamic date from the Google Sheet (new)
+Add a row "Hijri Offset" to the sheet: -1, 0 or 1. It replaces HIJRI_OFFSET_DAYS and changes the Islamic date on the site AND the start/end of Ramadan.
+After the moon announcement: if the site shows a date one day behind the news, put 1 (or 0); one day ahead, put -1 (or the next lower). No row = the built-in value (-1).
